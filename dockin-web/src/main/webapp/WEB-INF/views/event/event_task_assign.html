@@ -1,0 +1,144 @@
+<style>
+    #task-modal .slider-thumb input {
+        position: absolute;
+        margin-left: 184px;
+    }
+    #task-modal{
+        text-align: left;
+    }
+    #task-modal li.user_li {
+        marign: 5px;
+        display: inline-block;
+        width:110px;
+        text-align: center;
+    }
+
+    #task-modal li.user_li img {
+        border-radius: 50%;
+    }
+
+    #task-modal li.user_li p {
+        margin-top: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #task-modal li.user_li input {
+        position:absolute;
+        margin-left: 34px;
+        margin-top:-100px;
+    }
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">新增用户</h5>
+</div>
+
+<div class="modal-body" id="task-modal" style="height:400px;">
+
+    <form id="user-form" name="user-form" class="form-horizontal">
+        <input type="hidden" name="id">
+        <input type="hidden" name="version">
+        <input type="hidden" name="isSuperAdmin">
+        <input type="hidden" name="createDateTime" data-flag="date" data-format="yyyy-mm-dd hh:ii:ss">
+        <input type="hidden" name="deleted">
+        <input type='hidden' value='${CSRFToken}' id='csrftoken'>
+        <div class="col-md-9 ">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="form-group">
+                        <ul>
+                            <#list users as user>
+                            <li class="user_li" >
+                                <img src="${basePath}/resources/common${user.avatar}">
+                                <p>${user.userName}</p>
+                                <input type="checkbox" checked >
+                            </li>
+                            </#list>
+                        </ul>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <textarea class="form-control " style="width: 100%;height:200px;" placeholder="在【黄村加油站】接报【石油管道爆炸事件，请及时处理】"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box box-primary" id="task-slider">
+                <div class="box-body vertical-slider">
+                    <div class="slider-container" style="height:360px;">
+                        <div class="slider-content">
+                            <div class="slider-thumb">
+                                <input type="checkbox">
+                                <img src="${basePath}/resources/common/images/01.jpg">
+                            </div>
+                            <div class="slider-thumb">
+                                <input type="checkbox" checked>
+                                <img src="${basePath}/resources/common/images/02.jpg">
+                            </div>
+                            <div class="slider-thumb">
+                                <input type="checkbox" checked>
+                                <img src="${basePath}/resources/common/images/05.jpg">
+                            </div>
+                        </div>
+                        <span class="slider-control slider-up" data-direction="up" style="display:none;"><i
+                                class="glyphicon glyphicon glyphicon-circle-arrow-up"></i></span>
+                        <span class="slider-control slider-down" data-direction="down"><i
+                                class="glyphicon glyphicon glyphicon-circle-arrow-down"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<div class="modal-footer" style="text-align: center">
+    <!--以下两种方式提交验证,根据所需选择-->
+    <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 提交</button>
+    <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+            class="fa fa-remove"></i> 取消
+    </button>
+</div>
+<script src="${basePath}/resources/common/libs/slider/jquery.easing.js"></script>
+<!--<script src="${basePath}/resources/common/libs/slider/vertical-slider.js"></script>-->
+<script>
+    $(function () {
+        var content = $('.modal-body .slider-content'),
+            containerHeight = $('.slider-container').height(),
+            contentHeight = $('.slider-content').height(),
+            maxHeight = contentHeight - containerHeight,
+            itemHeight = $('.slider-thumb').height();
+
+        $('.modal-body .slider-control').click(function () {
+            var direction = $(this).data('direction'),
+                topPos = Math.round(content.position().top),
+                scrollDist;
+
+            if (direction === 'down') {
+                scrollDist = topPos - itemHeight;
+                $('.modal-body .slider-up').fadeIn(200);
+                if (scrollDist < -maxHeight) {
+                    scrollDist = -maxHeight;
+                    $('.modal-body .slider-down').fadeOut(200);
+                }
+            } else {
+                if (topPos === 0 || Math.abs(topPos) < itemHeight) {
+                    scrollDist = 0;
+                    $('.modal-body .slider-up').fadeOut(200);
+                } else {
+                    $('.modal-body .slider-down').fadeIn(200);
+                    scrollDist = topPos + itemHeight;
+                }
+            }
+
+
+            content.animate({
+                top: scrollDist
+            }, 300, 'easeInOutBack');
+
+        });
+    })
+</script>

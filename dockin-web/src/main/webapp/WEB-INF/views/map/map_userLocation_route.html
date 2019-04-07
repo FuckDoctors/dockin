@@ -1,0 +1,114 @@
+<div class="box-body no-padding" id="map-route" style="margin-top:10px;">
+    <div class="row" style="margin:12px 0;">
+        <div class="col-sm-12">
+            <select class="form-control select2" id="user-select" data-placeholder="请选择人员" style="width: 100%"
+                    onchange="userRouteObj.changeValue()">
+                <option></option>
+                <option value="1">李安琪</option>
+                <option value="2">刘德华</option>
+                <option value="3">白展堂</option>
+            </select>
+        </div>
+    </div>
+    <div class="row" style="margin:12px 0;">
+        <div class="col-sm-12">
+            <div class="input-group date" style="width: 100%">
+                <input class="form-control datepicker" data-provide="datepicker" data-flag="datepicker"
+                       data-date-format="yyyy-mm-dd" placeholder="开始时间">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin:12px 0;">
+        <div class="col-sm-12">
+            <div class="input-group date" style="width: 100%">
+                <input class="form-control datepicker" data-provide="datepicker" data-flag="datepicker"
+                       data-date-format="yyyy-mm-dd" placeholder="结束时间">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-footer with-border text-center">
+    <button class="btn btn-primary"><i class="fa fa-search"></i> 查询</button>
+</div>
+
+<script>
+    var userRouteObj = {
+        changeValue: function () {
+            var val = $("#user-select").select2('val');
+            var usersRedIcon = L.icon({
+                iconUrl: '${basePath}/resources/common/images/user_red.png',
+                iconSize: [32, 32]
+            });
+            var usersIcon = L.icon({
+                iconUrl: '${basePath}/resources/common/images/user0.png',
+                iconSize: [32, 32]
+            });
+            var removeIcon= L.icon({
+                iconUrl: '${basePath}/resources/common/images/remove-circle.png',
+                iconSize: [32, 32]
+            });
+            mapObj.map.eachLayer(function (layer) {
+                console.log(layer);
+                if (layer instanceof L.Marker) {
+                    layer.setIcon(usersIcon);
+                    if (layer.options.dataId == val) {
+                        layer.setIcon(usersRedIcon);
+                    }
+                }
+                else if(layer instanceof L.Polyline){
+                    layer.remove();
+                }
+            });
+            // 路径回调
+            var latlngs = [[39.7429400000, 116.3508300000],
+                [39.7429600000, 116.3512300000]];
+            var polyline = L.polyline(latlngs).addTo(mapObj.map);
+            var count = 0;
+            var lat = 39.7429600000;
+            var lng = 116.3512300000;
+
+            function addLatlng() {
+                if (count > 20) {
+                    var removePolyline=L.marker([lat, lng], {icon:removeIcon}).addTo(mapObj.map);
+                    removePolyline.on('click',function () {
+                        polyline.remove();
+                        removePolyline.remove();
+                    })
+                    return;
+                }
+                else {
+                    count++;
+                    setTimeout(function () {
+                        if (count <11) {
+                            polyline.addLatLng(L.latLng(lat + 0.000025, lng + 0.0003));
+                            lat = lat + 0.000025;
+                            lng = lng + 0.0004;
+                        }
+                        else {
+                            polyline.addLatLng(L.latLng(lat - 0.00004, lng + 0.0002));
+                            lat = lat - 0.00004;
+                            lng = lng + 0.0002;
+                        }
+                        mapObj.map.fitBounds(polyline.getBounds());
+                        addLatlng();
+                    }, 1000);
+                }
+            }
+
+            addLatlng();
+
+
+        }
+    }
+    $(function () {
+        var form = $("#map-route").form({baseEntity: false});
+        form.initComponent();
+    })
+</script>

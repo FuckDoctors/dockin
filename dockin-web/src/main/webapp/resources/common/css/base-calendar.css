@@ -1,0 +1,93 @@
+.dateTable td {
+    text-align: center;
+    vertical-align: bottom !important;
+    border: 1px solid #c0c0c0 !important;
+}
+
+.dateTable tbody td {
+    height: 100px;
+    background-color: white;
+    width: 14.3%;
+    curor: pointer;
+}
+
+.dateTable tbody tr {
+    curor: pointer !important;
+}
+
+.dateTable tbody td:hover {
+    background-color: #fcf8e3;
+    curor: pointer;
+}
+
+.dateTable tbody td.active {
+    background-color: #fcf8e3 !important;
+    curor: pointer;
+}
+
+.dateTable td.disableDate {
+    background-color: #f4f4f4;
+}
+
+.dateTable td.disableDate:hover {
+    background-color: #f4f4f4;
+    curor: pointer;
+}
+
+.dateTable .progress {
+    background-color: #c0c0c0;
+}
+
+.dateTable .text-info {
+    font-size: 10px;
+}
+
+.dateTable .col-sm-8 {
+    padding-right: 2px;
+    padding-left: 10px;
+}
+
+.dateTable .col-sm-4 {
+    padding-left: 2px;
+    padding-right: 10px;
+}
+
+.dateTable .date {
+    padding-top: 5px;
+}
+
+.timeTable tr {
+    height: 30px;
+    vertical-align: middle;
+}
+
+.timeTable tr td {
+    height: 30px;
+    vertical-align: middle !important;
+    width: 12%;
+    curor: pointer!important;
+}
+
+.timeTable tr td .row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.timeTable tr td.disableTitle{
+    background-color: #f4f4f4;
+    curor: pointer;
+}
+
+.timeTable tr td.disableTime{
+    background-color: #f4f4f4;
+    curor: pointer;
+}
+
+.timeTable tr td.dateTime{
+    curor: pointer!important;
+}
+
+.timeTable tr td.actived {
+    background-color: #fcf8e3 !important;
+    curor: pointer;
+}

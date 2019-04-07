@@ -1,0 +1,242 @@
+<style>
+    #generator_table td {
+        vertical-align: middle;
+        padding: 4px;
+    }
+</style>
+<section class="content-header">
+    <!-- 以下代码为代码生成器生成，生成时间: 2017-02-20 14:15:46，作者：billjiang/475572229@qq.com-->
+
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">数据列表</a></li>
+        <li class="active">列编辑</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="dataTables_filter" id="searchDiv">
+                    <!--查询条件-->
+                    <h4 class="pull-left text-gray">列编辑</h4>
+                    <input type="search" placeholder="请输入姓名" title="姓名" name="g.name"
+                           class="form-control" id="g.name" operator="like" likeOption="true">
+
+                    <div class="has-feedback form-group">
+                        <input type="search" placeholder="开始生日" title="生日" name="g.birthday" data-flag="datepicker"
+                               class="form-control" data-format="yyyy-mm-dd">
+                        <span class="fa fa-calendar form-control-feedback"></span>
+                    </div>
+                    ~
+                    <div class="has-feedback form-group">
+                        <input type="search" placeholder="结束生日" title="生日" name="g.birthday" data-flag="datepicker"
+                               class="form-control" data-format="yyyy-mm-dd">
+                        <span class="fa fa-calendar form-control-feedback"></span>
+                    </div>
+
+
+                    <select name="n.id" id="n.id" title="民族" data-flag="dictSelector" data-code="NATION"
+                            data-placeholder="请选择民族" class="form-control select2" style="width: 120px;"
+                            data-blank="true"></select>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" data-btn-type="search">查询</button>
+                        <button type="button" class="btn btn-default" data-btn-type="reset">重置</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-btn-type="add"><i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="edit"><i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="delete" title="删除选中行"><i
+                                class="fa fa-remove"></i></button>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-btn-type="deleteBatch">
+                        <i class="fa fa-remove"></i>&nbsp;批量删除
+                    </button>
+                    <button type="button" class="btn btn-info" data-pagename="generator_table_coledit"
+                            data-btn-type="custom"><i
+                            class="fa fa-check-square-o"></i>&nbsp;自定义列
+                    </button>
+                </div>
+                <div class="box-body" style="padding-top:0px;">
+                    <table id="generator_table" class="table table-border table-striped table-hover">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="${basePath}/resources/common/js/dataTables-render.js"></script>
+<script>
+    var generatorTable = null, winId = "generatorWin";
+    var generatorObj = {
+        initTable: function () {
+            var form = $("#searchDiv").form({baseEntity: false});
+            form.initComponent();
+            var self = this;
+            //全选/全不选
+            var config = {
+                    loadComplete: function () {
+                        //单元格头部，变成选择框
+                        var title = generatorTable.table.column(0).header();
+                        var header = "<input type='checkbox' value='all' class='checkbox-all'>";
+                        $(title).html(header);
+                        $(title).css("padding-right", "8px");
+                        $("input.checkbox-all").change(function () {
+                            if ($(this).is(":checked")) {
+                                $(".checkbox-js").prop("checked", true);
+                            } else {
+                                $(".checkbox-js").prop("checked", false);
+                            }
+                        }).css("cursor", "pointer");
+                    }
+                },
+                generatorTable = new Table({
+                    tableId: "generator_table",
+                    queryId: "generator_table_coledit",
+                    searchDiv: "searchDiv",
+                    config: config
+                });
+            generatorTable.serverCallback = function () {
+                $("#generator_table .select2").select2({
+                    minimumResultsForSearch: Infinity
+                });
+
+                /* $("#generator_table [data-flag='icheck']").iCheck({
+                     checkboxClass: 'icheckbox_square-green',
+                     radioClass: 'iradio_square-green'
+                 });*/
+                $("#generator_table [data-flag='datepicker']").datepicker({
+                    autoclose: true,
+                    format: $(this).data("format") ? $(this).data("format") : "yyyy-mm-dd",
+                    language: 'zh-CN',
+                    clearBtn: true,
+                    todayHighlight: true
+                })
+            }
+            return generatorTable;
+        },
+        addRow: function () {
+            modals.openWin({
+                winId: winId,
+                title: '新增测试',
+                width: "900px",
+                url: basePath + "/generator/edit"
+            })
+        },
+        editRow: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要编辑的行');
+                return false;
+            }
+            modals.openWin({
+                winId: winId,
+                title: '编辑测试【' + generatorTable.getSelectedRowData().name + '】',
+                width: '900px',
+                url: basePath + "/generator/edit?id=" + rowId
+            });
+        },
+        deleteRow: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要删除的行');
+                return false;
+            }
+            modals.confirm("是否要删除该行数据？", function () {
+                ajaxPost(basePath + "/generator/delete/" + rowId, null, function (data) {
+                    if (data.success) {
+                        generatorTable.reloadRowData();
+                    } else {
+                        modals.info("测试数据被引用，不可删除！");
+                    }
+                });
+            })
+        },
+        //批量删除
+        deleteBatch: function () {
+            var ids = $("input.checkbox-js:checked").map(function () {
+                return $(this).val();
+            }).get().join();
+            if (!ids) {
+                modals.info('请至少勾选一行要删除的行');
+                return false;
+            }
+            modals.confirm("是否要删除这些数据？", function () {
+                ajaxPost(basePath + "/generator/deleteBatch/" + ids, null, function (data) {
+                    if (data.success) {
+                        generatorTable.reloadRowData();
+                    } else {
+                        modals.info("测试数据被引用，不可删除！");
+                    }
+                })
+            })
+        },
+        //操作列渲染
+        renderOperator: function (value, type, rowObj) {
+            return '<i class="fa fa-edit text-aqua" style="padding-right:10px;cursor:pointer" title="编辑" onclick="generatorObj.editRow(\'' + value + '\')" data-flag="edit" data-id="' + value + '"></i>' +
+                '<i class="fa fa-remove text-aqua" style="padding-right:10px;cursor:pointer" title="删除" onclick="generatorObj.deleteRow(\'' + value + '\')" data-flag="remove" data-id="' + value + '"></i>';
+        },
+        //姓名列渲染
+        renderName: function (value, type, rowObj) {
+            return '<input style="width: 140px;" class="form-control" value="' + value + '"></input>';
+        },
+        //性别
+        renderGender: function (value, type, rowObj) {
+            if (value == 1)
+                return '<label class="control-label"> <input type="radio" data-flag="icheck" name="gender_' + rowObj.id + '" checked value="1"> 男</label> &nbsp; ' +
+                    '<label class="control-label"> <input type="radio" data-flag="icheck"  name="gender_' + rowObj.id + '" value="0"> 女';
+            else
+                return '<label class="control-label"> <input type="radio" data-flag="icheck" name="gender_' + rowObj.id + '"  value="1"> 男</label> &nbsp; ' +
+                    '<label class="control-label"> <input type="radio" data-flag="icheck" checked name="gender_' + rowObj.id + '" checked  value="0"> 女';
+
+        },
+        //民族
+        renderNation: function (value, type, rowObj) {
+            var selector = '<select  data-code="NATION"  data-flag="dictSelector" data-placeholder="请选择民族" class="form-control select2" style="width:100%" name="nation_' + rowObj.id + '"></select>'
+            return render.select(value, rowObj, selector);
+        },
+        //学历
+        renderEducation: function (value, type, rowObj) {
+            var selector = '<select  data-code="EDUCATION"  data-flag="dictSelector" data-placeholder="请选择学历" class="form-control select2" style="width:100%" name="nation_' + rowObj.id + '"></select>'
+            return render.select(value, rowObj, selector);
+        },
+        //生日
+        renderBirthday: function (value) {
+            return ' <div class="has-feedback form-group">\n' +
+                '                        <input  value="'+value+'" placeholder="结束生日" title="生日" name="g.birthday" data-flag="datepicker"\n' +
+                '                               class="form-control" style="width:140px;" data-format="yyyy-mm-dd">\n' +
+                '                        <span class="fa fa-calendar text-black form-control-feedback"></span>\n' +
+                '                    </div>';
+        },
+        //工资
+        renderSalary: function (value, type, rowObj) {
+            return '<input style="width: 140px;" class="form-control" value="' + value + '"></input>';
+        },
+    }
+
+
+    $(function () {
+        generatorTable = generatorObj.initTable();
+        //绑定按钮事件
+        $("button[data-btn-type]").click(function () {
+            var action = $(this).data("btn-type");
+            var rowId = generatorTable.getSelectedRowId();
+            switch (action) {
+                case "add":
+                    generatorObj.addRow();
+                    break;
+                case "edit":
+                    generatorObj.editRow(rowId);
+                    break;
+                case 'delete':
+                    generatorObj.deleteRow(rowId);
+                    break;
+                case 'deleteBatch':
+                    generatorObj.deleteBatch();
+                    break;
+            }
+        })
+    })
+</script>

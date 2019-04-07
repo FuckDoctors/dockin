@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryContext xmlns="http://www.example.org/query" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.example.org/query query.xsd">
+    <!--本xml片段为代码生成器生成，时间：2017-02-10 11:44:41-->
+    <query id="generator" key="id" tableName="测试列表" className="com.eap.demos.entity.Generator" widthType="px">
+        <column key="rowIndex" header="序号" width="80"/>
+        <column key="name" header="姓名" width="150" operator="like" allowSort="true" />
+        <column key="code" header="编码" width="150"/>
+        <column key="gender" header="性别" width="150" render="1=男,0=女"/>
+        <column key="birthday" header="生日" classType="java.util.Date" operator="between" width="150" dateFormat="yyyy-mm-dd"/>
+        <column key="nation.name" header="民族" width="150"/>
+        <column key="education" header="学历" width="150"/>
+        <column key="salary" header="工资" width="150"/>
+        <column key="department" header="所在组织" width="150"/>
+        <column key="remark" header="备注" align="left" width="150"/>
+        <column key="enable" header="是否启用" width="150"/>
+    </query>
+
+    <!--可编辑表格 列编辑-->
+    <query id="generator_table_coledit" key="id" tableName="可编辑表格" order="g.create_date_time desc" widthType="px">
+        <sql>
+            <![CDATA[
+              select g.id,g.name, g.version,g.code,gender,birthday,n.id nationId,e.name education,
+              salary,department,g.remark,enable
+              from  tbl_demo_generator g
+              left join tbl_dict n on g.dict_nation=n.id
+              left join tbl_dict e on g.education=e.id
+              where 1=1
+            ]]>
+        </sql>
+        <column key="id" header="选择" width="80" fnRender="render.checkbox"/>
+        <column key="rowIndex" header="序号" width="80"/>
+        <column key="name" id="g.name" header="姓名" width="150" operator="like" allowSort="true" fnRender="generatorObj.renderName" />
+        <column key="code" header="编码" width="150"/>
+        <column key="gender" header="性别" width="150" fnRender="generatorObj.renderGender"/>
+        <column key="birthday" id="g.birthday" header="生日" classType="java.util.Date" operator="between" width="150" dateFormat="yyyy-mm-dd" fnRender="generatorObj.renderBirthday"/>
+        <column key="nationId"  header="民族" width="150" fnRender="generatorObj.renderNation"/>
+        <!--fnRender="generatorObj.renderEducation"-->
+        <column key="education" header="学历" width="150"/>
+        <column key="salary" header="工资" width="150" fnRender="generatorObj.renderSalary"/>
+        <column key="department" header="所在组织" width="150"/>
+        <column key="remark" header="备注" align="left" width="150"/>
+        <column key="enable" header="是否启用" width="150" render="true=是,false=否"/>
+        <column key="id" id="operator" header="操作" width="100" fnRender="generatorObj.renderOperator"/>
+    </query>
+
+
+    <!--可编辑表格 行编辑-->
+    <query id="generator_table_rowedit" key="id" tableName="可编辑表格" order="g.id asc" widthType="px">
+        <sql>
+            <![CDATA[
+              select g.id,g.name, g.version,g.code,gender,birthday,n.name nationName,e.name education,
+              salary,department,g.remark,enable
+              from  tbl_demo_generator g
+              left join tbl_dict n on g.dict_nation=n.id
+              left join tbl_dict e on g.education=e.id
+              where 1=1
+            ]]>
+        </sql>
+        <column key="id" header="选择" width="80" fnRender="render.checkbox"/>
+        <column key="rowIndex" header="序号" width="80"/>
+        <column key="name" id="g.name" header="姓名" width="150" operator="like" allowSort="true" />
+        <column key="code" header="编码" width="150"/>
+        <column key="gender" header="性别" width="150" render="1=男,0="/>
+        <column key="birthday" id="g.birthday" header="生日" classType="java.util.Date" operator="between" width="150" dateFormat="yyyy-mm-dd"/>
+        <column key="nationName"  header="民族" width="150"/>
+        <column key="education" header="学历" width="150"/>
+        <column key="salary" header="工资" width="150"/>
+        <column key="department" header="所在组织" width="150"/>
+        <column key="remark" header="备注" align="left" width="150"/>
+        <column key="enable" header="是否启用" width="150" render="true=是,false=否"/>
+        <column key="id" id="operator" header="操作" width="100" fnRender="generatorObj.renderOperator"/>
+    </query>
+</queryContext>

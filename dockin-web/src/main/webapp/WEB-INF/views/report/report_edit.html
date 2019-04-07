@@ -1,0 +1,171 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">报表管理</a></li>
+        <li class="active" id="page-title">新建报表</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <form id="report_form" name="report_form" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="version">
+                    <input type="hidden" name="createDateTime" data-flag="date" data-format="yyyy-mm-dd hh:ii:ss">
+                    <input type="hidden" name="deleted" value="0">
+                    <input type='hidden' value="${CSRFToken}" id='csrftoken'>
+                    <input type="hidden" id="state" name="state" value="0">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称<span style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="请填写名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">实例名称<span style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="expression" name="expression"
+                                       placeholder="请填写实例名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">类型<span style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <select name="type.id" id="type.id" data-code="RPT_TYPE" data-flag="dictSelector"
+                                        data-placeholder="请选择类型" class="form-control select2" style="width:100%"
+                                        data-blank="true"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">排序<span style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="sort" name="sort" placeholder="请填写排序">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">填写说明</label>
+                            <div class="col-sm-9">
+                                <textarea name="remark" id="remark" placeholder="请填写填写说明" class="form-control"
+                                          style="height:150px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer text-right">
+                        <button type="button" class="btn btn-default" data-btn-type="cancel" onclick="reportEditObj.cancel()" data-dismiss="modal">返回
+                        </button>
+                        <button type="submit" class="btn btn-primary" data-btn-type="save">下一步</button>
+                        <!--<button type="button" class="btn btn-primary" data-btn-type="preview" id="previewButton" disabled>预览</button>
+                        <button type="button" class="btn btn-primary" data-btn-type="submit" id="submitButton" disabled>发布</button>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var form;
+    var id = "${id?default(0)}";
+    var reportEditObj = {
+        cancel: function () {
+            modals.confirm("返回列表该页面数据丢失，是否放弃本页面的编辑，直接返回到列表？",function () {
+                window.loadPage(basePath+"/report/list");
+            })
+        },
+        checkSubmitButton:function () {
+            ajaxPost(basePath+"/report/checkSubmit/"+id,null,function(ret){
+               if(ret.success){
+                   $("#submitButton").removeAttr("disabled");
+               }
+            })
+        },
+        bindSubmitEvent: function () {
+            var self=this;
+            $("#state").val(BaseConstant.ReportState.SUBMIT);
+            //提交流程
+            $("#submitButton").click(function () {
+                $("#report_form").data("bootstrapValidator").validate();
+                var interval = setInterval(function () {
+                    if ($("#report_form").data('bootstrapValidator').isValid()) {
+                        self.saveData();
+                        clearInterval(interval);
+                        // 跳转到列表
+                        window.loadPage(basePath+"/report/list");
+                    }
+                }, 100);
+            })
+            //TODO 预览
+
+        },
+        saveData:function () {
+            var report = form.getFormSimpleData();
+            var result=false;
+            ajaxPost(basePath + '/report/save', {"obj": JSON.stringify(report)}, function (data) {
+                result=data.success;
+            });
+            return result;
+        }
+    }
+
+    $(function () {
+        //初始化表单
+        form = $("#report_form").form();
+        //数据校验
+        $("#report_form").bootstrapValidator({
+            message: '请输入有效值',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            submitHandler: function () {
+                modals.confirm('确认保存？', function () {
+                    reportEditObj.saveData();
+                    //下一步跳转到编辑列的界面
+                    window.loadPage(basePath+"/report/column/tree/"+id);
+                });
+            },
+            fields: {
+                "name": {
+                    validators: {
+                        notEmpty: {message: '名称不能为空'}
+                    }
+                },
+                "expression": {
+                    validators: {
+                        notEmpty: {message: '实例名称不能为空'}
+                    }
+                },
+                "type.id": {
+                    validators: {
+                        notEmpty: {message: '类型不能为空'}
+                    }
+                },
+                "sort": {
+                    validators: {
+                        notEmpty: {message: '排序不能为空'},
+                        integer: {message: '请填写整数'}
+                    }
+                }
+            }
+        });
+        //初始化控件
+        form.initComponent();
+        //编辑回填
+        if (id != 0) {
+            ajaxPost(basePath + "/report/get/" + id, null, function (data) {
+                $("#page-title").text("编辑【" + data.name + "】");
+                form.initFormData(data);
+            })
+        }
+    });
+
+    $(function () {
+       reportEditObj.checkSubmitButton();
+       reportEditObj.bindSubmitEvent();
+    })
+
+</script>

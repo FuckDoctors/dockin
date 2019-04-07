@@ -1,0 +1,97 @@
+<style>
+    #duty-time-modal tr td{
+        padding:5px 0px;
+    }
+    #duty-time-modal td.kv-label{
+        width:80px;
+        text-align: center;
+    }
+
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">新增特殊日期</h5>
+</div>
+
+<div class="modal-body" id="duty-time-modal">
+    <form id="duty-time-form" name="duty-time-form" class="form-horizontal">
+                <div class="box box-solid">
+
+                    <div class="box-body" style="min-height:350px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">日期名称</label></td>
+                                <td colspan="3"><input type="text" class="form-control" id="title" name="title"></td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label class="control-label">开始日期</label></td>
+                                <td>
+                                    <input class="form-control datepicker" data-provide="datepicker" data-flag="datepicker" data-date-format="yyyy-mm-dd">
+                                </td>
+                                <td class="kv-label"><label class="control-label">结束日期</label></td>
+                                <td>
+                                    <input class="form-control datepicker" data-provide="datepicker" data-flag="datepicker" data-date-format="yyyy-mm-dd" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">备注</label></td>
+                                <td colspan="3">
+                                    <textarea class="form-control" style="height: 120px;"></textarea>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="box-footer text-center">
+                        <!--以下两种方式提交验证,根据所需选择-->
+                        <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 保存
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+                                class="fa fa-remove"></i> 取消
+                        </button>
+                    </div>
+                </div>
+
+        <!-- /.box-body -->
+
+        <!-- /.box-footer -->
+    </form>
+
+</div>
+<script>
+    var dutyTimeObj = {
+        form: null,
+        initForm: function () {
+            var form = $("#duty-time-form").form();
+            form.initComponent();
+            this.form = form;
+
+        },
+        resetForm: function () {
+            this.form.clearForm();
+            $("#user-form").data('bootstrapValidator').resetForm();
+        },
+        initDatePicker: function () {
+            $('.datepicker').datepicker();
+        },
+        checkChange: function (obj) {
+            var self = this;
+            if ($(obj).is(":checked")) {
+                self.checkedUserIds.push($(obj).val());
+            } else {
+                self.checkedUserIds.splice(self.checkedUserIds.indexOf($(obj).val()), 1);
+            }
+        },
+        checkedUserIds: []
+    };
+
+    $(function () {
+        dutyTimeObj.initForm();
+        dutyTimeObj.initDatePicker();
+
+
+    });
+</script>

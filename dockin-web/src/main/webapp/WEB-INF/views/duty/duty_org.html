@@ -1,0 +1,314 @@
+
+
+<!-- Main content -->
+<section class="content" id="duty-org">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-header text-center with-border">
+                    <div class="box-title">组织机构</div>
+                </div>
+                <div class="box-body" id="org-tree" style="min-height: 350px;overflow-y: auto">
+
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header text-center with-border">
+                    <div class="box-title">常用群组</div>
+                </div>
+                <div class="box-body" id="group-tree" style="min-height: 200px;">
+
+
+
+                </div>
+                <div class="box-footer text-center">
+                    <button type="submit" class="btn btn-primary" data-btn-type="add" onclick="orgObj.openGroupAddDialog()"><i class="fa fa-plus"></i> 添加群组
+                    </button>
+                    <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+                            class="fa fa-remove"></i> 删除群组
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-primary">
+
+                <!-- /.box-header -->
+                <div class="dataTables_filter" id="searchDiv" style="text-align: left">
+                    <button type="button" class="btn btn-default" onclick="orgObj.openOrgDialog()">新增</button>
+                    <button type="button" class="btn btn-default" onclick="">修改</button>
+                    <button type="button" class="btn btn-default" onclick="">删除</button>
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseDiv"><i
+                            class="fa fa-search"></i> 检索
+                    </button>
+                </div>
+                <div id="collapseDiv" class="collapse  dataTables_filter"  style="margin-top:20px">
+                    <div class="form-group pull-left">
+                        <label class="control-label">人员姓名：</label>
+                        <input class="form-control" type="search" placeholder="请输入姓名" likeOption="true">
+                        <label class="control-label">&nbsp;&nbsp;手机号：</label>
+                        <input class="form-control" type="search" likeOption="true" placeholder="请输入手机号">
+                        <label class="control-label">&nbsp;&nbsp;工作单位：</label>
+                        <input class="form-control input--group-lg" type="search" likeOption="true">
+                        <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;职务：</label>
+                        <input class="form-control" type="search" likeOption="true">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" data-btn-type="search"><i
+                                class="fa fa-search"></i> 检索
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="reset"><i
+                                class="fa fa-refresh"></i> 重置
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="margin: 10px;">
+                    <table class="table table-bordered table-striped table-hover" id="dutyTable1">
+                        <thead>
+                        <tr>
+                            <th width="50px" class="text-center"><input type="checkbox"></th>
+                            <th width="50px" class="text-center">序号</th>
+                            <th width="100" class="text-center">人员名称</th>
+                            <th field="type"  width="150" class="text-center">工作单位</th>
+                            <th width="100" class="text-center">行政职务</th>
+                            <th field="level" class="text-center" width="100">常用手机</th>
+                            <th field="receiveTime" width="100" class="text-center">备用手机</th>
+                            <th field="receiveTime" width="100" class="text-center">办公电话</th>
+                            <th field="receiveTime" width="220" class="text-center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">李莫愁</td>
+                            <td class="text-center">古墓派</td>
+                            <td class="text-center">小龙女师姐</td>
+                            <td class="text-center">13501023456</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-primary" onclick="orgObj.openGroupJoinDialog()"><span class="fa fa-plus">加入群组</span></button>
+                                    <button class="btn btn-sm btn-default"><span class="fa fa-remove">移出群组</span></button>
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">2</td>
+                            <td class="text-center">佟湘玉</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">掌柜</td>
+                            <td class="text-center">13888888888</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">李大嘴</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">厨子</td>
+                            <td class="text-center">13600001234</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">4</td>
+                            <td class="text-center">郭芙蓉</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">打杂</td>
+                            <td class="text-center">13600002345</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">白展堂</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">跑堂</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">6</td>
+                            <td class="text-center">陆无双</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">捕快</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">7</td>
+                            <td class="text-center">吕秀才</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">会计</td>
+                            <td class="text-center">13600004567</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">8</td>
+                            <td class="text-center">莫小贝</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">衡山掌门</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">9</td>
+                            <td class="text-center">邢育森</td>
+                            <td class="text-center">十八里铺</td>
+                            <td class="text-center">捕头</td>
+                            <td class="text-center">13611119999</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td class="text-center">10</td>
+                            <td class="text-center">燕小六</td>
+                            <td class="text-center">同福客栈</td>
+                            <td class="text-center">捕头</td>
+                            <td class="text-center">13622229999</td>
+                            <td class="text-center">13601056532</td>
+                            <td class="text-center">010-12345678</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" style="margin: 10px;">
+                        <div class="col-sm-6">
+                            <div class="dataTables_length" id="user_table_length">
+                                <label>
+                                    <select name="user_table_length" aria-controls="user_table" class="form-control input-sm">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="-1">全部</option>
+                                    </select> 记录/页
+                                </label>
+                            </div>
+                            <div class="dataTables_length" id="user_table_length1">
+                                <label>page
+                                    <select name="user_table_length" aria-controls="user_table" class="form-control input-sm">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                    </select> of / 10
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="dataTables_info pull-right" id="user_table_info" role="status" aria-live="polite">
+                                第 1 至 10 项记录，共 100 项
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+    var orgObj = {
+        openOrgDialog:function () {
+            modals.openWin({
+                winId:'duty_member_win',
+                title:'新增联系人',
+                width:'800px',
+                url:basePath+"/duty/member"
+            });
+        },
+        openGroupAddDialog:function () {
+            modals.openWin({
+                winId:'duty_group_win',
+                title:'新增群组',
+                width:'500px',
+                url:basePath+"/duty/group"
+            });
+        },
+
+        openGroupJoinDialog:function () {
+            modals.openWin({
+                winId:'duty_join_win',
+                title:'加入群组',
+                width:'500px',
+                url:basePath+"/duty/join"
+            });
+        },
+        initTable: function () {
+            /* $('#dutyTable').DataTable({
+                 "paging": true,
+                 "lengthChange": false,
+                 "searching": false,
+                 "ordering": false,
+                 "info": true,
+                 "autoWidth": false
+             });*/
+        },
+        initTree: function (selectNodeId) {
+            var self = this;
+            var treeData = null;
+            ajaxPost(basePath + "/org/treeData", null, function (data) {
+                treeData = data;
+            });
+            $("#org-tree").treeview({
+                data: treeData,
+                showBorder: false,
+                expandIcon: "glyphicon glyphicon-stop",
+                collapseIcon: "glyphicon glyphicon-unchecked",
+                levels: 1,
+                onNodeSelected: function (event, data) {
+                    //self.fillOrgForm(data);
+                    //self.formReadonly();
+                }
+            });
+            if (treeData.length == 0)
+                return;
+            //默认选中第一个节点
+            selectNodeId = selectNodeId || 0;
+            $("#org-tree").data('treeview').selectNode(selectNodeId);
+            $("#org-tree").data('treeview').expandNode(selectNodeId);
+            $("#org-tree").data('treeview').revealNode(selectNodeId);
+        },
+
+
+    };
+    $(function () {
+        //orgObj.initSearchDiv();
+        //orgObj.showSearchDiv();
+        orgObj.initTree(0);
+        orgObj.initTable();
+
+    })
+
+</script>

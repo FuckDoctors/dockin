@@ -1,0 +1,395 @@
+<style>
+    #eventImage img{
+        width: 100px;
+        margin-right: 10px;
+        vertical-align: top;
+    }
+
+    #event-add-modal tr td{
+        padding:5px 0px;
+    }
+    #event-add-modal td.kv-label{
+        width:120px;
+        text-align: center;
+    }
+
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">新增用户</h5>
+</div>
+
+<div class="modal-body" id="event-add-modal" style="background-color: #ecf0f5">
+
+    <form id="event-form" name="event-form" class="form-horizontal">
+        <input type="hidden" name="id">
+        <input type="hidden" name="version">
+        <input type="hidden" name="isSuperAdmin">
+        <input type="hidden" name="createDateTime" data-flag="date" data-format="yyyy-mm-dd hh:ii:ss">
+        <input type="hidden" name="deleted">
+        <input type='hidden' value='${CSRFToken}' id='csrftoken'>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-primary">
+
+                    <div class="box-body" style="min-height:565px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">事件标题</label></td>
+                                <td colspan="3"><input type="text" class="form-control" id="title" name="title"
+                                                       placeholder="事件标题"></td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="eventType" class="control-label">事件类型</label></td>
+                                <td><select name="eventType" id="eventType" data-flag="dictSelector"
+                                            data-code="EVENT_TYPE"
+                                            data-placeholder="事件类型" class="form-control select2" style="width: 260px;"
+                                            data-blank="true"></select></td>
+                                <td class="kv-label"><label for="eventLevel" class="control-label">事件级别</label></td>
+                                <td class="kv-content">
+                                    <select id="eventLevel" data-flag="dictSelector" data-code="EVENT_LEVEL"
+                                            class="form-control select2" data-placeholder="事件级别" data-blank="true"
+                                            name="level" style="width:260px;">
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">事发地点</label></td>
+                                <td class="kv-content" >
+                                    <select id="eventAddress"
+                                            class="form-control select2" data-placeholder="事发地点" data-blank="true"
+                                            name="level" style="width:260px;">
+                                        <option>海淀区永泰庄</option>
+                                        <option>海淀区xxx路</option>
+                                        <option>海淀区xxx路</option>
+                                        <option>海淀区xxx路</option>
+                                    </select>
+                                </td>
+                            <td colspan="2">
+                                    <input class="form-control" placeholder="请填写详细地址" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">事件描述</label></td>
+                                <td class="kv-content" colspan="3">
+                                    <textarea class="form-control" placeholder="请填写事件描述" style="height: 120px;"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">现场图片</label></td>
+                                <td class="kv-content" colspan="3">
+                                    <ul class="mailbox-attachments clearfix">
+                                    <li>
+                                        <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo1.png" alt="Attachment"></span>
+
+                                        <div class="mailbox-attachment-info">
+                                            <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo1.png</a>
+                                            <span class="mailbox-attachment-size">
+                          2.67 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                          &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo2.png" alt="Attachment"></span>
+
+                                        <div class="mailbox-attachment-info">
+                                            <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo2.png</a>
+                                            <span class="mailbox-attachment-size">
+                          1.9 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                                                     &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo3.jpg" alt="Attachment"></span>
+                                        <div class="mailbox-attachment-info">
+                                            <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo3.png</a>
+                                            <span class="mailbox-attachment-size">
+                          1.9 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                                                     &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                   <!-- <div id="eventImage" style="height:161px;">
+                                        <img src="${basePath}/resources/common/images/01.jpg">
+                                        <img src="${basePath}/resources/common/images/02.jpg">
+                                        <img src="${basePath}/resources/common/images/03.jpg">
+                                        <button  type="button" class="btn btn-social-icon btn-primary btn-lg"  id="fileBtn"> <i class="fa fa-plus" style="font-size: 35px;"></i> </button>
+                                    </div>-->
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">事发时间</label></td>
+                                <td class="kv-content">
+                                    <div class="has-feedback" style="width: 300px;">
+                                        <input type="search" placeholder="接报时间" title="生日" name="birthday"
+                                               data-flag="datepicker" class="form-control" data-format="yyyy-mm-dd" style="width:200px;">
+                                        <span class="fa fa-calendar form-control-feedback" style="width:200px;"></span>
+                                    </div>
+                                </td>
+                                <td class="kv-label"><label for="eventSource" class="control-label">信息来源</label></td>
+                                <td class="kv-content">
+                                    <select id="eventSource" class="form-control select2" name="level"
+                                            style="width:260px;">
+                                        <option value="aa">视频采集</option>
+                                        <option>处突人员</option>
+                                        <option>外场设备</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="box-footer text-center">
+                        <!--以下两种方式提交验证,根据所需选择-->
+                        <div class="btn btn-default btn-file">
+                            <i class="fa fa-paperclip"></i> 上传图片
+                            <input type="file" name="attachment" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 提交
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+                                class="fa fa-remove"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box-body" style="padding:0px;">
+                    <div class="nav-tabs-custom" style="margin:0px;">
+                        <ul class="nav nav-tabs">
+                            <li class="active text-center" style="width: 45%"><a href="#event-add-map"
+                                                                                 data-toggle="tab">地 图</a>
+                            </li>
+                            <li class="text-center" style="width: 45%"><a href="#event-contact-tree" data-toggle="tab">通讯录</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" style="padding:0px;">
+                            <div class="tab-pane active" id="event-add-map" style="height:580px;">
+
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="event-contact-tree"
+                                 style="height:560px;overflow-y:auto;margin:10px;">
+                            </div>
+
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.box-body -->
+
+        <!-- /.box-footer -->
+    </form>
+
+</div>
+<script>
+    var eventAddObj = {
+        form: null,
+        initForm: function () {
+            var form = $("#event-form").form();
+            form.initComponent();
+            this.form = form;
+
+        },
+        resetForm: function () {
+            this.form.clearForm();
+            $("#user-form").data('bootstrapValidator').resetForm();
+        },
+        initTree: function () {
+            $("#" +
+                "event-contact-tree").treeview({
+                data: [{
+                    "id": 1,
+                    "text": "区域巡防队员",
+                    "nodes": [{
+                        "id": 11,
+                        "text": "网络区域1",
+                        "nodes": [{
+                            "id": 111,
+                            "text": "处突队员A"
+                        }, {
+                            "id": 112,
+                            "text": "处突队员B"
+                        }, {
+                            "id": 113,
+                            "text": "处突队员C"
+                        }]
+                    }, {
+                        "id": 12,
+                        "text": "网络区域2",
+                        "nodes": [{
+                            "id": 121,
+                            "text": "处突队员A"
+                        }, {
+                            "id": 122,
+                            "text": "处突队员B",
+                        }, {
+                            "id": 123,
+                            "text": "处突队员C"
+                        }, {
+                            "id": 124,
+                            "text": "处突队员D",
+                            "checked": true
+                        }]
+                    }]
+                }, {
+                    "id": 2,
+                    "text": "联动单位人员",
+                    "nodes": [{
+                        "id": 21,
+                        "text": "区城管局",
+                        "nodes": [{
+                            "id": 211,
+                            "text": "王俊峰科长"
+                        }, {
+                            "id": 212,
+                            "text": "ccc科长"
+                        }, {
+                            "id": 213,
+                            "text": "ddd科长"
+                        }]
+                    }, {
+                        "id": 22,
+                        "text": "区综治办",
+                        "nodes": [{
+                            "id": 221,
+                            "text": "张文东科长"
+                        }, {
+                            "id": 222,
+                            "text": "xxx科长",
+                        }]
+                    }]
+                }],
+                showBorder: false,
+                levels: 3,
+                showCheckbox: true,
+                showIcon: false
+            })
+        },
+        initMap: function () {
+            var self = this;
+            var normalm = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+            var imgm = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+            var imga = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
+                maxZoom: 18,
+                minZoom: 5
+            });
+
+            var normal = L.layerGroup([normalm]),
+                image = L.layerGroup([imgm, imga]);
+
+            var baseLayers = {
+                "地图": normal,
+                "影像": image,
+            }
+
+            var map = L.map("event-add-map", {
+                center: [39.7428800000, 116.3403300000],
+                zoom: 15,
+                layers: [normal],
+                zoomControl: false
+            });
+
+            L.control.layers(baseLayers, null).addTo(map);
+            L.control.zoom({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小'
+            }).addTo(map);
+
+            var locationIcon = L.marker([39.7428800000, 116.3403300000]).addTo(map)
+                .bindPopup('弹出框.<br> Easily customizable.')
+            //.openPopup();
+
+            var userIcon = L.icon({
+                iconUrl: '${basePath}/resources/common/images/user_1.png',
+                iconSize: [32, 32], // size of the icon
+                // point of the icon which will correspond to marker's location
+                popupAnchor: [0, -5] // point from which the popup should open relative to the iconAnchor
+            });
+
+
+            L.marker([39.7458800000, 116.3413300000], {
+                icon: userIcon,
+                type: 'user',
+                name: '李四'
+            }).addTo(map).bindPopup("<input type='checkbox' onchange='eventAddObj.checkChange(this)' value='1' checked/>李四");
+            L.marker([39.7381800000, 116.3403300000], {
+                icon: userIcon,
+                type: 'user',
+                name: '王五'
+            }).addTo(map).bindPopup("<input type='checkbox' onchange='eventAddObj.checkChange(this)' checked/>王五");
+            L.marker([39.7421800000, 116.3383300000], {
+                icon: userIcon,
+                type: 'user',
+                name: '佟湘玉'
+            }).addTo(map).bindPopup("<input type='checkbox' onchange='eventAddObj.checkChange(this)' value='2' checked/>佟湘玉");
+            L.marker([39.7488800000, 116.3423300000], {
+                icon: userIcon,
+                type: 'user',
+                name: '白展堂'
+            }).addTo(map).bindPopup("<input type='checkbox' onchange='eventAddObj.checkChange(this)' value='3'/>白展堂");
+            L.marker([39.7351800000, 116.3353300000], {
+                icon: userIcon,
+                type: 'user',
+                name: '李大嘴'
+            }).addTo(map).bindPopup("<input type='checkbox' onchange='eventAddObj.checkChange(this)' value='4'/>李大嘴");
+            map.on("popupopen", function () {
+                $("#event-add-map input:checkbox").prop("checked", false);
+                for (var i = 0; i < self.checkedUserIds.length; i++) {
+                    var val = self.checkedUserIds[i];
+                    $("#event-add-map input:checkbox[value='" + val + "']").prop("checked", true);
+                }
+            });
+
+            map.on('click', function (e) {
+                locationIcon.remove();
+                locationIcon = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+            });
+
+        },
+        checkChange: function (obj) {
+            var self = this;
+            if ($(obj).is(":checked")) {
+                self.checkedUserIds.push($(obj).val());
+            } else {
+                self.checkedUserIds.splice(self.checkedUserIds.indexOf($(obj).val()), 1);
+            }
+        },
+        checkedUserIds: []
+    };
+
+    $(function () {
+        eventAddObj.initForm();
+        eventAddObj.initTree();
+        setTimeout(function () {
+            eventAddObj.initMap();
+        }, 200);
+
+    });
+
+
+</script>

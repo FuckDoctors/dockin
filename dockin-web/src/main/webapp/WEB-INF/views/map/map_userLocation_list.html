@@ -1,0 +1,54 @@
+
+<div class="box-body no-padding" id="map-user-location-list">
+     <div id="user-tree"> </div>
+</div>
+<script>
+
+    var locationObj={
+        initTree: function () {
+            $("#user-tree").treeview({
+                data: [ {
+                    "id": 2,
+                    "text": "全体成员",
+                    "nodes": [{
+                        "id": 21,
+                        "text": "巡防队员",
+                        "nodes": [{
+                            "id": 211,
+                            "text": "张三（13567899876）",
+                            "icon":"fa fa-user"
+                        }, {
+                            "id": 212,
+                            "text": "李思琪（13567899876）",
+                            "icon":"fa fa-user"
+                        }, {
+                            "id": 213,
+                            "text": "马冬梅（13567899876）",
+                            "icon":"fa fa-user"
+                        }]
+                    }, {
+                        "id": 22,
+                        "text": "其他分组",
+                        "nodes": [{
+                            "id": 221,
+                            "text": "佟湘玉（13567899876）",
+                            "icon":"fa fa-user"
+                        }, {
+                            "id": 222,
+                            "text": "郭芙蓉（13567899876）",
+                            "icon":"fa fa-user"
+                        }]
+                    }]
+                }],
+                showBorder: false,
+                levels: 3,
+                showCheckbox: true,
+                showIcon: true
+            })
+        }
+    }
+    $(function () {
+        locationObj.initTree();
+    })
+
+</script>

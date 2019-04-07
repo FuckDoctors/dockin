@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryContext xmlns="http://www.example.org/query" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.example.org/query query.xsd">
+<!--本xml片段为代码生成器生成，时间：2018-09-10 13:43:26-->
+<query id="report_list" key="id" tableName="报表列表" className="com.eap.report.entity.ReportEntity" widthType="px" order="updateDateTime desc">
+        <column key="rowIndex" header="序号" width="80"/>
+        <column key="name" header="名称" align="left" classType="String" allowSort="true" width="150"/>
+        <column key="expression" header="实例名称" align="left" classType="String" allowSort="true" width="150"/>
+        <column key="type.name" header="类型" classType="String" allowSort="true" width="150"/>
+        <column key="remark" header="填写说明" enableTooltip="true" classType="String" align="left" width="100" maxLen="80"/>
+        <column key="state" header="状态" classType="Integer" allowSort="true" width="150" render="0=临时保存,10=发布"/>
+        <column key="sort" header="排序" hidden="true" classType="Integer" allowSort="true" width="150"/>
+        <column key="id" header="操作" width="200" fnRender="reportObj.fnRenderOperator"></column>
+</query>
+
+
+<!--本xml片段为代码生成器生成，时间：2018-09-11 09:58:51-->
+<query id="report_column_list" key="id" tableName="报表列列表" className="com.eap.report.entity.ReportColumn" widthType="px">
+        <column key="rowIndex" header="序号" width="80"/>
+        <column key="name" header="名称" classType="String" allowSort="true" width="150"/>
+        <column key="code" header="编码" classType="String" allowSort="true" width="150"/>
+        <column key="parentId" header="父列" classType="String" allowSort="true" width="150"/>
+        <column key="dataType.name" header="数据类型" classType="String" allowSort="true" width="150"/>
+        <column key="componentType.name" header="控件类型" classType="String" allowSort="true" width="150"/>
+        <column key="precision" header="保留位数" classType="Integer" allowSort="true" width="150"/>
+        <column key="notNull" header="是否必填" classType="String" allowSort="true" width="150"/>
+        <column key="default_value" header="默认值" classType="String" allowSort="true" width="150"/>
+        <column key="columnType" header="列类型" classType="String" allowSort="true" width="150"/>
+        <column key="expression" header="计算表达式" classType="String" allowSort="true" width="150"/>
+        <column key="dictCode" header="字典编码" classType="String" allowSort="true" width="150"/>
+        <column key="report.name" header="报表" classType="String" allowSort="true" align="left" width="150"/>
+</query>
+</queryContext>

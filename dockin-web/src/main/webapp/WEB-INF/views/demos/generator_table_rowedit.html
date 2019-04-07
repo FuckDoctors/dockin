@@ -1,0 +1,359 @@
+<style>
+    #generator_table td {
+        vertical-align: middle;
+        padding: 4px;
+    }
+</style>
+<section class="content-header">
+    <!-- 以下代码为代码生成器生成，生成时间: 2017-02-20 14:15:46，作者：billjiang/475572229@qq.com-->
+    <h1>
+        数据列表
+        <small>可编辑表格</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">数据列表</a></li>
+        <li class="active">行编辑</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="dataTables_filter" id="searchDiv">
+                    <!--查询条件-->
+                    <h4 class="pull-left text-gray">行编辑</h4>
+                    <input type="search" placeholder="请输入姓名" title="姓名" name="g.name"
+                           class="form-control" id="g.name" operator="like" likeOption="true">
+
+                    <div class="has-feedback form-group">
+                        <input type="search" placeholder="开始生日" title="生日" name="g.birthday" data-flag="datepicker"
+                               class="form-control" data-format="yyyy-mm-dd">
+                        <span class="fa fa-calendar form-control-feedback"></span>
+                    </div>
+                    ~
+                    <div class="has-feedback form-group">
+                        <input type="search" placeholder="结束生日" title="生日" name="g.birthday" data-flag="datepicker"
+                               class="form-control" data-format="yyyy-mm-dd">
+                        <span class="fa fa-calendar form-control-feedback"></span>
+                    </div>
+
+                    <select name="n.id" id="n.id" title="民族" data-flag="dictSelector" data-code="NATION"
+                            data-placeholder="请选择民族" class="form-control select2" style="width: 120px;"
+                            data-blank="true"></select>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" data-btn-type="search">查询</button>
+                        <button type="button" class="btn btn-default" data-btn-type="reset">重置</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-btn-type="add"><i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="edit"><i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="delete" title="删除选中行"><i
+                                class="fa fa-remove"></i></button>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-btn-type="deleteBatch">
+                        <i class="fa fa-remove"></i>&nbsp;批量删除
+                    </button>
+                </div>
+                <div class="box-body" style="padding-top:0px;">
+                    <table id="generator_table" class="table table-bordered table-striped table-hover">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="${basePath}/resources/common/js/dataTables-render.js"></script>
+<script>
+    var generatorTable = null, winId = "generatorWin";
+    var generatorObj = {
+        initTable: function () {
+            var form = $("#searchDiv").form({baseEntity: false});
+            form.initComponent();
+            var self = this;
+            //全选/全不选
+            var config = {
+                    loadComplete: function () {
+                        //单元格头部，变成选择框
+                        var title = generatorTable.table.column(0).header();
+                        var header = "<input type='checkbox' value='all' class='checkbox-all'>";
+                        $(title).html(header);
+                        $(title).css("padding-right", "8px");
+                        $("input.checkbox-all").change(function () {
+                            if ($(this).is(":checked")) {
+                                $(".checkbox-js").prop("checked", true);
+                            } else {
+                                $(".checkbox-js").prop("checked", false);
+                            }
+                        }).css("cursor", "pointer");
+
+                    }
+                },
+                generatorTable = new Table({
+                    tableId: "generator_table",
+                    queryId: "generator_table_rowedit",
+                    searchDiv: "searchDiv",
+                    config: config
+                });
+
+            /*generatorTable.serverCallback = function () {
+                //self.initData();
+                $("#generator_table .select2").select2({
+                    minimumResultsForSearch: Infinity
+                });
+
+                $("#generator_table [data-flag='datepicker']").datepicker({
+                    autoclose: true,
+                    format: $(this).data("format") ? $(this).data("format") : "yyyy-mm-dd",
+                    language: 'zh-CN',
+                    clearBtn: true,
+                    todayHighlight: true
+                })
+            }*/
+            return generatorTable;
+        },
+        addRow: function () {
+            modals.openWin({
+                winId: winId,
+                title: '新增测试',
+                width: "900px",
+                url: basePath + "/generator/edit"
+            })
+        },
+        editRow: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要编辑的行');
+                return false;
+            }
+            modals.openWin({
+                winId: winId,
+                title: '编辑测试【' + generatorTable.getSelectedRowData().name + '】',
+                width: '900px',
+                url: basePath + "/generator/edit?id=" + rowId
+            });
+        },
+        deleteRow: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要删除的行');
+                return false;
+            }
+            modals.confirm("是否要删除该行数据？", function () {
+                ajaxPost(basePath + "/generator/delete/" + rowId, null, function (data) {
+                    if (data.success) {
+                        generatorTable.reloadRowData();
+                    } else {
+                        modals.info("测试数据被引用，不可删除！");
+                    }
+                });
+            })
+        },
+        //批量删除
+        deleteBatch: function () {
+            var ids = $("input.checkbox-js:checked").map(function () {
+                return $(this).val();
+            }).get().join();
+            if (!ids) {
+                modals.info('请至少勾选一行要删除的行');
+                return false;
+            }
+            modals.confirm("是否要删除这些数据？", function () {
+                ajaxPost(basePath + "/generator/deleteBatch/" + ids, null, function (data) {
+                    if (data.success) {
+                        generatorTable.reloadRowData();
+                    } else {
+                        modals.info("测试数据被引用，不可删除！");
+                    }
+                })
+            })
+        },
+        rowEditable: function (obj) {
+            //姓名，编码,性别，生日，民族，工资 可编辑
+            var rowData = null;
+            ajaxPost(basePath + "/generator/get/" + $(obj).data("id"), null, function (data) {
+                rowData = data;
+            })
+            rowObj["name"].render($(obj).data("id"), generatorTable.getColumnIndexByName("name"));
+            rowObj["code"].render($(obj).data("id"), generatorTable.getColumnIndexByName("code"));
+            rowObj["gender"].render($(obj).data("id"), generatorTable.getColumnIndexByName("gender"), rowData.gender);
+            rowObj["birthday"].render($(obj).data("id"), generatorTable.getColumnIndexByName("birthday"));
+            rowObj["nation"].render($(obj).data("id"), generatorTable.getColumnIndexByName("nationName"),rowData.nation.id);
+            rowObj["salary"].render($(obj).data("id"), generatorTable.getColumnIndexByName("salary"),rowData.nation.id);
+            $("#generator_table .select2").select2({
+                minimumResultsForSearch: Infinity
+            });
+
+            $("#generator_table [data-flag='datepicker']").datepicker({
+                autoclose: true,
+                format: $(this).data("format") ? $(this).data("format") : "yyyy-mm-dd",
+                language: 'zh-CN',
+                clearBtn: true,
+                todayHighlight: true
+            })
+            $(obj).hide();
+            $(obj).parent().find("[data-flag='save']").show();
+
+        },
+        saveRow: function (obj) {
+            var rowData = {};
+            rowData["id"] = $(obj).data("id");
+            rowData["name"] = rowObj["name"].save($(obj).data("id"), generatorTable.getColumnIndexByName("name"));
+            rowData["code"] = rowObj["code"].save($(obj).data("id"), generatorTable.getColumnIndexByName("code"));
+            rowData["gender"] = rowObj["gender"].save($(obj).data("id"), generatorTable.getColumnIndexByName("gender"));
+            rowData["birthday"]=rowObj["birthday"].save($(obj).data("id"), generatorTable.getColumnIndexByName("birthday"));
+            rowData["nation"]={};
+            rowData["nation"]["id"]=rowObj["nation"].save($(obj).data("id"), generatorTable.getColumnIndexByName("nationName"));
+            rowData["salary"]=rowObj["salary"].save($(obj).data("id"), generatorTable.getColumnIndexByName("salary"));
+
+            ajaxPost(basePath + "/generator/saveObj", {obj: JSON.stringify(rowData)}, function (data) {
+                if (data.success) {
+                    modals.correct("保存成功");
+                }
+            })
+            $(obj).hide();
+            $(obj).parent().find("[data-flag='edit']").show();
+        },
+        //操作列渲染
+        renderOperator: function (value, type, rowObj) {
+            return '<i class="fa fa-edit text-aqua" style="padding-right:10px;cursor:pointer" title="编辑" onclick="generatorObj.rowEditable(this)" data-flag="edit" data-id="' + value + '"></i>' +
+                '<i class="fa fa-save text-aqua" style="padding-right:10px;cursor:pointer;display:none " onclick="generatorObj.saveRow(this)" title="保存" data-flag="save" data-id="' + value + '"></i>' +
+                '<i class="fa fa-remove text-aqua" style="padding-right:10px;cursor:pointer" title="删除" onclick="generatorObj.deleteRow(\'' + value + '\')" data-flag="remove" data-id="' + value + '"></i>';
+
+        },
+        initData: function () {
+            rowObj["gender"].init(generatorTable.getColumnIndexByName("gender"));
+        }
+    }
+
+    var rowObj = {
+        name: {
+            save: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("#name_" + rowId).val();
+                generatorTable.table.cell(selector).data(value);
+                return value;
+            },
+            render: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = generatorTable.table.cell(selector).data();
+                generatorTable.table.cell(selector).data('<input style="width: 140px;" id="name_' + rowId + '" class="form-control" value="' + value + '"/>');
+            }
+        },
+        code: {
+            save: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("#code_" + rowId).val();
+                generatorTable.table.cell(selector).data(value);
+                return value;
+            },
+            render: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = generatorTable.table.cell(selector).data();
+                generatorTable.table.cell(selector).data('<input style="width: 120px;" id="code_' + rowId + '" class="form-control" value="' + value + '"/>');
+            }
+        },
+        gender: {
+            init: function (index) {
+                var datas = generatorTable.table.column(index).data();
+                $.each(datas, function (rowIndex, value) {
+                    var rowObj = generatorTable.table.row(rowIndex).data();
+                    var selector = $("#" + rowObj.id).find("td").eq(index);
+                    generatorTable.table.cell(selector).data(value == 1 ? "男" : "女");
+                })
+            },
+            save: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("[name='gender_" + rowId+"']:checked").val();
+                generatorTable.table.cell(selector).data(value == 1 ? "男" : "女");
+                return value;
+            },
+            render: function (rowId, index, value) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var r_value = generatorTable.table.cell(selector).data();
+                if (value == 1)
+                    r_value = '<label class="control-label"> <input type="radio" data-flag="icheck" name="gender_' + rowId + '" checked value="1"> 男</label> &nbsp; ' +
+                        '<label class="control-label"> <input type="radio" data-flag="icheck"  name="gender_' + rowId + '" value="0"> 女';
+                else
+                    r_value = '<label class="control-label"> <input type="radio" data-flag="icheck" name="gender_' + rowId + '"  value="1"> 男</label> &nbsp; ' +
+                        '<label class="control-label"> <input type="radio" data-flag="icheck" checked name="gender_' + rowId + '" checked  value="0"> 女';
+                generatorTable.table.cell(selector).data(r_value);
+            }
+        },
+        birthday: {
+            save: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("#birthday_" + rowId).val();
+                generatorTable.table.cell(selector).data(value);
+                return value;
+
+            },
+            render: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = generatorTable.table.cell(selector).data();
+                var r_value=' <div class="has-feedback form-group">\n' +
+                '                        <input  value="'+value+'" placeholder="结束生日" title="生日" id="birthday_'+rowId+'" data-flag="datepicker"\n' +
+                '                               class="form-control" style="width:140px;" data-format="yyyy-mm-dd">\n' +
+                '                        <span class="fa fa-calendar text-black form-control-feedback"></span>\n' +
+                '                    </div>';
+                generatorTable.table.cell(selector).data(r_value);
+            }
+
+        },
+        nation: {
+            save:function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("#nation_" + rowId).select2('data')[0].text;
+                var nationId=$("#nation_" + rowId).select2("val");
+                generatorTable.table.cell(selector).data(value);
+                return nationId;
+
+            },
+            render:function (rowId, index, nationId) {
+                var component = '<select  data-code="NATION" id="nation_'+rowId+'"  data-flag="dictSelector" data-placeholder="请选择民族" class="form-control select2" style="width:140px;" name="nation_' + rowObj.id + '"></select>'
+                var r_value=render.select(nationId, null, component);
+                var selector = $("#" + rowId).find("td").eq(index);
+                generatorTable.table.cell(selector).data(r_value);
+            }
+        },
+        salary: {
+            save: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = $("#salary_" + rowId).val();
+                generatorTable.table.cell(selector).data(value);
+                return value;
+            },
+            render: function (rowId, index) {
+                var selector = $("#" + rowId).find("td").eq(index);
+                var value = generatorTable.table.cell(selector).data();
+                generatorTable.table.cell(selector).data('<input style="width: 120px;" id="salary_' + rowId + '" class="form-control" value="' + value + '"/>');
+            }
+        }
+
+    }
+
+    $(function () {
+        generatorTable = generatorObj.initTable();
+        //绑定按钮事件
+        $("button[data-btn-type]").click(function () {
+            var action = $(this).data("btn-type");
+            var rowId = generatorTable.getSelectedRowId();
+            switch (action) {
+                case "add":
+                    generatorObj.addRow();
+                    break;
+                case "edit":
+                    generatorObj.editRow(rowId);
+                    break;
+                case 'delete':
+                    generatorObj.deleteRow(rowId);
+                    break;
+                case 'deleteBatch':
+                    generatorObj.deleteBatch();
+                    break;
+            }
+        })
+    })
+</script>

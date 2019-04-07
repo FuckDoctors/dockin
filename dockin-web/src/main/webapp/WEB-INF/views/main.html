@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="AdminLTE,AdminEAP,AdminLTE框架">
+    <meta name="description" content="基于AdminLTE的快速开发框架,让web开发更简单">
+    <title>报表平台</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!--  -->
+    <!-- <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico" media="screen"> -->
+    <link rel="shortcut icon" type="image/x-icon" href="${basePath}/resources/common/favicon.ico" media="screen"/>
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="${basePath}/resources/common/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${basePath}/resources/common/libs/linearicons/style.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+
+    <link rel="stylesheet" href="${basePath}/resources/common/css/base.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="${basePath}/resources/common/libs/html5shiv/html5shiv.min.js"></script>
+    <script src="${basePath}/resources/common/libs/respond/respond.min.js"></script>
+    <![endif]-->
+    <!-- table and edit -->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/datatables/select.bootstrap.min.css">
+    <link rel="stylesheet"
+          href="${basePath}/resources/adminlte/plugins/bootstrap-validator/dist/css/bootstrap-validator.css"/>
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/iCheck/all.css">
+    <!-- daterangepicker -->
+    <!--<link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/daterangepicker/daterangepicker.css">-->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/select2/select2.min.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- treeview -->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/bootstrap-treeview/bootstrap-treeview.min.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${basePath}/resources/adminlte/dist/css/skins/_all-skins.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<a name="main"></a>
+<div class="wrapper">
+
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a href="${basePath}/main" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+          <!--  <span class="logo-mini">预约</span>-->
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>报表平台</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <!-- Navbar Right Menu -->
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="${basePath}/resources/adminlte/dist/img/user0-160x160.jpg" class="user-image"
+                                 alt="User Image">
+                            <span class="hidden-xs">${user.name}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="${basePath}/resources/adminlte/dist/img/user0-160x160.jpg" class="img-circle"
+                                     alt="User Image">
+
+                                <p>
+                                    ${user.name}
+                                    <small id="deptName"></small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="javascript:changePwd()" class="btn btn-default btn-flat">修改密码</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="${basePath}/logout?" class="btn btn-default btn-flat">注销</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <!--<div class="user-panel">
+                <div class="pull-left image">
+                    <img src="${basePath}/resources/adminlte/dist/img/user0-160x160.jpg" class="img-circle"
+                         alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>${user.name}</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+                </div>
+            </div>
+-->
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="mainDiv">
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer text-center">
+        Copyright &copy; 2018 iOmnisoft.tech. All rights
+        reserved.  <b>技术支持</b>：475572229
+        &nbsp;&nbsp;&nbsp;
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+            <div class="tab-pane" id="control-sidebar-home-tab">
+            </div>
+            <!-- /.tab-pane -->
+
+            <!-- Settings tab content -->
+            <!-- /.tab-pane -->
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+
+</div>
+<!-- ./wrapper -->
+<script type="text/javascript">
+    var basePath = "${basePath}";//给外部js文件传递路径参数
+</script>
+<!-- jQuery 2.2.0 -->
+<script src="${basePath}/resources/adminlte/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<!--JSON2-->
+<script src="${basePath}/resources/common/json/json2.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="${basePath}/resources/adminlte/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="${basePath}/resources/adminlte/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="${basePath}/resources/adminlte/dist/js/app.min.js"></script>
+<!-- SlimScroll 1.3.0 -->
+<script src="${basePath}/resources/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
+<!-- dataTable -->
+<script src="${basePath}/resources/adminlte/plugins/datatables/jquery.dataTables.js"></script>
+<script src="${basePath}/resources/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="${basePath}/resources/common/js/dataTables.js"></script>
+<!-- form -->
+<script src="${basePath}/resources/adminlte/plugins/bootstrap-validator/dist/js/bootstrap-validator.min.js"></script>
+<script src="${basePath}/resources/adminlte/plugins/iCheck/icheck.min.js"></script>
+
+<!--daterangepicker-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="${basePath}/resources/adminlte/plugins/daterangepicker/daterangepicker.js"></script>-->
+
+<script src="${basePath}/resources/adminlte/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="${basePath}/resources/adminlte/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+<!-- treeview -->
+<script src="${basePath}/resources/adminlte/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<!-- CK Editor -->
+
+<!-- AdminLTE for demo purposes -->
+<script src="${basePath}/resources/adminlte/dist/js/demo.js"></script>
+<!--select2-->
+<script src="${basePath}/resources/adminlte/plugins/select2/select2.full.min.js"></script>
+
+
+
+<script type="text/javascript" src="${basePath}/resources/common/js/base.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-modal.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-form.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-datasource.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-org.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-constant.js"></script>
+<!-- 加入页面的的脚本 -->
+<script>
+    //加载菜单
+    var menuData;
+    ajaxPost(basePath + "/function/getlist", null, function (data) {
+        var $li, $menu_f_ul, $menu_s, $li_s, $menu_s_ul;
+        menuData = data;
+        $.each(data, function (index, item) {
+            if (item.levelCode.length == 6) {
+                if(hasChildMenu(item.id)) {
+                    $li = $('<li class="treeview"></li>');
+                    var $menu_f = $('<a href="#">\n' +
+                        '<i class="' + item.icon + '"></i> <span>' + item.name + '</span>\n' +
+                        ' <span class="pull-right-container">\n' +
+                        '<i class="fa fa-angle-left pull-right"></i>\n' +
+                        '</span></a>');
+                    $li.append($menu_f);
+                    $menu_f_ul = $('<ul class="treeview-menu"></ul>');
+                    $li.append($menu_f_ul);
+                    $("ul.sidebar-menu").append($li);
+                }else{
+                    $li = $('<li class="treeview"></li>');
+                    var $menu_f = $('<a href="#" data-url="${basePath}' + item.url + '">\n' +
+                        '<i class="' + item.icon + '"></i> <span>' + item.name + '</span>\n' +
+                        ' <span class="pull-right-container">\n' +
+                        '</span></a>');
+                    $li.append($menu_f);
+                    $("ul.sidebar-menu").append($li);
+                }
+            }
+            else if (item.levelCode.length == 12) {
+                if (hasChildMenu(item.id)) {
+                    $li_s = $('<li class="treeview"></li>');
+                    $menu_s = $('<a href="#">\n' +
+                        '<i class="' + item.icon + '"></i> <span>' + item.name + '</span>\n' +
+                        ' <span class="pull-right-container">\n' +
+                        '<i class="fa fa-angle-left pull-right"></i>\n' +
+                        '</span></a>');
+                    $li_s.append($menu_s);
+                    $menu_s_ul = $('<ul class="treeview-menu"></ul>');
+                    $li_s.append($menu_s_ul);
+                    $menu_f_ul.append($li_s);
+                } else {
+                    $menu_s = $('<li><a href="#" data-url="${basePath}' + item.url + '"><i class="' + item.icon + '"></i>' + item.name + '</a></li>');
+                    $menu_f_ul.append($menu_s);
+                }
+            }
+            else if (item.levelCode.length == 18) {
+                $menu_t = $('<li><a href="#" data-url="${basePath}' + item.url + '"><i class="' + item.icon + '"></i>' + item.name + '</a></li>');
+                $menu_s_ul.append($menu_t);
+            }
+        });
+
+    });
+
+    //判断当前二级菜单是否有包含三级菜单
+    function hasChildMenu(parentId) {
+        if (!menuData)
+            return false;
+        for (var i = 0; i < menuData.length; i++) {
+            var item = menuData[i];
+            if (item.parentId == parentId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function changePwd() {
+        modals.openWin({
+            winId:"pwdWin",
+            url:basePath+"/user/changePwd",
+            width:"600px"
+        })
+    }
+
+    $(function () {
+        //首页默认加载
+        //loadPage("${basePath}/duty/set");
+        //loadPage("${basePath}/duty/home");
+        //loadPage("${basePath}/report/list");
+        loadPage("${basePath}/report/orgSelector/ff80818165c20e4c0165c21909230000");
+        //loadPage("${basePath}/reservation/homePage");
+        //loadPage("${basePath}/activiti/task/todo/list");
+        //loadPage("${basePath}/activiti/delegate/list");
+        //loadPage("${basePath}/markdown/preview?id=402880e958ecdff60158ed0c62ba0001")
+        $("a[data-url]").click(function (evt) {
+            loadPage($(this).data("url"));
+            $("ul.sidebar-menu li").removeClass("active");
+            $("ul.treeview-menu li").removeClass("active");
+            $(this).parent().addClass("active");
+            $(this).parent().closest("li.treeview").addClass("active");
+        });
+
+        //头像回填
+        ajaxPost(basePath + "/user/getAvatar", {userId: "${user.id}"}, function (result) {
+            if (result)
+                $(".user-image,.img-circle").attr("src", basePath + result.src);
+        })
+        //组织机构回填
+        var deptId = "${user.deptId!0}";
+        if (deptId != 0) {
+            ajaxPost(basePath + "/org/show/${user.deptId!'0'}", null, function (ret) {
+                if (ret.success)
+                    $("#deptName").text(ret.data);
+            })
+        }
+    });
+
+</script>
+</body>
+
+</html>

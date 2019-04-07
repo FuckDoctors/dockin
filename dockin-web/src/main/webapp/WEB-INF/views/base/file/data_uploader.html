@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="${basePath}/resources/common/libs/fileinput/css/fileinput.min.css">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">文件上传</h5>
+</div>
+<div class="modal-body">
+    <form id="attachment_form" name="attachment_form" class="form-horizontal" enctype="multipart/form-data">
+
+        <div class="box-body">
+            <div class="col-md-12">
+                <div class="form-group" id="file_container">
+                    <input type="file" name="file" class="file" id="attachment" accept=".xls,.xlsx">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript"
+        src="${basePath}/resources/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!--用于附件上传回填使用-->
+<script src="${basePath}/resources/common/libs/fileinput/js/fileinput.js"></script>
+<script src="${basePath}/resources/common/libs/fileinput/js/locales/zh.js"></script>
+<script type="text/javascript" src="${basePath}/resources/common/js/base-file.js"/>
+<script>
+    var fileinputConfig =${config};
+    fileinputConfig=$.extend(fileinputConfig,{fileinpunt:{maxFileCount:1}});
+    console.log(fileinputConfig);
+    $(function () {
+        if($("[name='fileIds']").length==0){
+            modals.error("请在该页面配置[name='fileIds']的隐藏域");
+            return;
+        }
+        $("#attachment").file({
+            title: "请上传附件",
+            fileinput: fileinputConfig.fileinput,
+            //如果已经有部分文件(编辑)，在此传文件ids
+            fileIdContainer: "[name='fileIds']",
+            //showContainer:'#attachment',
+            //显示文件类型 edit=可编辑  detail=明细 默认为明细
+            //showType:'edit',
+            window: false
+
+        });
+
+        $("#attachment").on("fileuploaded", function (event, data, previewId, index) {
+            if (data.response.fileIds) {
+                modals.hideWin("dataUploaderWin");
+            }
+        }).on("filebatchuploadsuccess",function (event,data) {
+            if (data.response.fileIds) {
+                modals.hideWin("dataUploaderWin");
+            }
+        });
+
+    });
+
+</script>

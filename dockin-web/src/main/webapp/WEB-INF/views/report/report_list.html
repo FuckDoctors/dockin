@@ -1,0 +1,126 @@
+<!-- 以下代码为代码生成器生成，生成时间: 2018-09-10 13:53:49，作者：billjiang/475572229@qq.com-->
+<section class="content-header">
+
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">报表管理</a></li>
+        <li class="active">报表管理</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="dataTables_filter" id="searchDiv">
+                    <!--查询条件-->
+                    <input type="search" placeholder="请输入名称" title="名称" name="name" style="width: 300px;"
+                           class="form-control" id="name" operator="like" likeOption="true">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" data-btn-type="search">查询</button>
+                        <button type="button" class="btn btn-default" data-btn-type="reset">重置</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-btn-type="add"><i class="fa fa-plus"></i> 新增</button>
+                      <!--  <button type="button" class="btn btn-default" data-btn-type="edit">编辑</button>
+                        <button type="button" class="btn btn-default" data-btn-type="delete">删除</button>-->
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="report_table" class="table table-bordered table-striped table-hover">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var reportTable, winId = "reportWin";
+
+    var reportObj = {
+        init: function () {
+            reportTable = new Table({
+                tableId: "report_table",
+                queryId: "report_list",
+                searchDiv: "searchDiv"
+            });
+        },
+        add: function () {
+            window.loadPage(basePath + "/report/edit");
+            /*modals.openWin({
+                winId: winId,
+                title: '新增报表',
+                width: "900px",
+                url: basePath + "/report/edit"
+            })*/
+        },
+        edit: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要编辑的行');
+                return false;
+            }
+            window.loadPage(basePath + "/report/edit?id=" + rowId);
+            /*modals.openWin({
+                winId: winId,
+                title: '编辑报表【' + reportTable.getSelectedRowData().name + '】',
+                width: '900px',
+                url: basePath + "/report/edit?id=" + rowId
+            });*/
+        },
+        delete: function (rowId) {
+            if (!rowId) {
+                modals.info('请选择要删除的行');
+                return false;
+            }
+            modals.confirm("是否要删除该行数据？", function () {
+                ajaxPost(basePath + "/report/delete/" + rowId, null, function (data) {
+                    if (data.success) {
+                        reportTable.reloadRowData();
+                    } else {
+                        modals.info("报表数据被引用，不可删除！");
+                    }
+                });
+            })
+        },
+
+        editColumn:function (rowId) {
+            window.loadPage(basePath+"/report/column/tree/"+rowId);
+        },
+        fnRenderOperator: function (value, type, rowObj) {
+            //流程定义
+            //var oper = "<button class='btn btn-info' href='javascript:void(0)' onclick='reportObj.editColumn(\"" + value + "\")'><i class='fa fa-edit'></i> 编辑列</button>";
+
+            var oper="";
+            if(rowObj.state==0) {
+                oper += "&nbsp;&nbsp;&nbsp;<button class='btn btn-info'  href='javascript:void(0)' onclick='reportObj.edit(\"" + value + "\")'><i class='fa fa-edit'></i> 编辑</button>"
+                oper += "&nbsp;&nbsp;&nbsp;<button class='btn btn-danger' href='javascript:void(0)' onclick='reportObj.delete(\"" + value + "\")'><i class='fa fa-remove'></i> 删除</button>";
+            }else{
+                oper += "&nbsp;&nbsp;&nbsp;<button class='btn btn-info' disabled href='javascript:void(0)' onclick='reportObj.edit(\"" + value + "\")'><i class='fa fa-edit'></i> 编辑</button>"
+                oper += "&nbsp;&nbsp;&nbsp;<button class='btn btn-danger' disabled href='javascript:void(0)' onclick='reportObj.delete(\"" + value + "\")'><i class='fa fa-remove'></i> 删除</button>";
+            }
+
+            return oper;
+        }
+    }
+    $(function () {
+        reportObj.init();
+        //绑定按钮事件
+        $("button[data-btn-type]").click(function () {
+            var action = $(this).data("btn-type");
+            var rowId = reportTable.getSelectedRowId();
+            switch (action) {
+                case "add":
+                    reportObj.add();
+                    break;
+                case "edit":
+                    reportObj.edit(rowId);
+                    break;
+                case 'delete':
+                    reportObj.edit(rowId);
+                    break;
+            }
+        })
+    })
+</script>

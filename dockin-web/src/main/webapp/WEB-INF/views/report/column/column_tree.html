@@ -1,0 +1,659 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">报表管理</a></li>
+        <li class="active" id="page-title">报表列维护</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <div id="tree"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" data-btn-type="addRoot">
+                            <li class="fa fa-plus">&nbsp;新增一级列</li>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="add">
+                            <li class="fa fa-plus">&nbsp;新增下级列</li>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="edit">
+                            <li class="fa fa-edit">&nbsp;编辑列</li>
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="delete">
+                            <li class="fa fa-remove">&nbsp;删除列</li>
+                        </button>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form class="form-horizontal" id="column-form">
+                        <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="version">
+                        <input type="hidden" name="createDateTime" data-flag="date" data-format="yyyy-mm-dd hh:ii:ss">
+                        <input type="hidden" name="deleted" value="0">
+                        <input type='hidden' value="${CSRFToken}" id='csrftoken'>
+                        <input type="hidden" name="parentId"/>
+                        <input type="hidden" value="${reportId}" name="report.id">
+                        <div class="form-group">
+                            <label for="parentName" class="col-sm-2 control-label">上级</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" disabled="disabled" id="parentName"
+                                       name="parentName" placeholder="上级">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">名 称<span style="color:red">*</span></label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="col-sm-2 control-label">编 码<span style="color:red">*</span></label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="code" name="code" placeholder="编码">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="levelCode" class="col-sm-2 control-label">层级编码<span
+                                    style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="levelCode" name="levelCode"
+                                       placeholder="层级编码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">列类型<span style="color:red">*</span></label>
+                            <div class="col-sm-9">
+                                <label class="control-label"> <input type="radio" name="columnType"
+                                                                     data-callback="columnObj.columnTypeChanged(this)"
+                                                                     data-flag="icheck" class="square-blue"
+                                                                     value="parent"> 父列（多表头用）</label> &nbsp;
+                                <label class="control-label"> <input type="radio" checked name="columnType"
+                                                                     data-callback="columnObj.columnTypeChanged(this)"
+                                                                     data-flag="icheck" class="square-blue"
+                                                                     value="normal"> 填报列</label> &nbsp;
+                                <label class="control-label"> <input type="radio" name="columnType"
+                                                                     data-callback="columnObj.columnTypeChanged(this)"
+                                                                     data-flag="icheck" class="square-blue"
+                                                                     value="calc"> 统计列</label>
+                            </div>
+                        </div>
+                        <div class="form-group" data-hidden="parent">
+                            <label class="col-sm-2 control-label">控件类型</label>
+                            <div class="col-sm-9">
+                                <select name="componentType.id" id="componentType.id" data-code="COMPONENT_TYPE"
+                                        data-flag="dictSelector" data-placeholder="请选择控件类型" class="form-control select2"
+                                        style="width:100%" data-blank="false"></select>
+                            </div>
+                        </div>
+                        <div class="form-group" data-hidden="parent">
+                            <label class="col-sm-2 control-label">数据类型</label>
+                            <div class="col-sm-9">
+                                <select name="dataType.id" id="dataType.id" data-code="DATA_TYPE"
+                                        data-flag="dictSelector" data-placeholder="请选择数据类型" class="form-control select2"
+                                        style="width:100%" data-blank="false"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-hidden="parent">
+                            <label class="col-sm-2 control-label">保留位数</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" value="2" id="precision" name="precision"
+                                       placeholder="请填写保留位数">
+                            </div>
+                        </div>
+                        <div class="form-group" data-hidden="parent">
+                            <label class="col-sm-2 control-label">是否必填</label>
+                            <div class="col-sm-9">
+                                <label class="control-label"> <input type="radio" checked name="notNull"
+                                                                     data-flag="icheck" class="square-blue" value="yes">
+                                    必填项</label> &nbsp;
+                                <label class="control-label"> <input type="radio" name="notNull" data-flag="icheck"
+                                                                     class="square-blue" value="no"> 非必填项</label>
+                            </div>
+                        </div>
+                        <div class="form-group" data-hidden="parent,calc">
+                            <label class="col-sm-2 control-label">默认值</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="default_value" name="default_value"
+                                       placeholder="请填写默认值">
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-hidden="parent">
+                            <label class="col-sm-2 control-label">计算表达式</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="expression" name="expression"
+                                       placeholder="请填写计算表达式">
+                            </div>
+                        </div>
+                        <div class="form-group" data-hidden="parent,calc">
+                            <label class="col-sm-2 control-label">父字典编码</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="dictCode" name="dictCode"
+                                       placeholder="请填写父字典编码">
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" id="dict_button" class="btn btn-info"
+                                        onclick="columnObj.createDict()">展开/收缩
+                                </button>
+                                <button type="button" id="dict_save_button" class="btn btn-info"
+                                        onclick="columnObj.saveDict()">保存字典
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group js-dict" style="display: none">
+                            <label class="col-sm-2 control-label">父字典文本</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="dictName" placeholder="请填写父字典文本" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group js-dict" style="display: none">
+                            <label class="col-sm-2 control-label">字典文本（逗号分割）</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="names" placeholder="请填写字典文本" readonly>
+                            </div>
+                        </div>
+
+                        <div class="box-footer" style="display:none">
+                            <div class="text-center">
+                                <button type="button" class="btn btn-default" data-btn-type="cancel">
+                                    <i class="fa fa-reply">&nbsp;取消</i>
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save">&nbsp;保存</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+        </div>
+    </div>
+    <div>
+        <div class="box-footer text-right">
+            <button type="button" class="btn btn-default" data-btn-type="cancel" onclick="columnObj.cancel()"
+                    data-dismiss="modal">上一步
+            </button>
+            <button type="button" class="btn btn-primary" data-btn-type="preview" onclick="columnObj.preview()">预览
+            </button>
+            <button type="button" class="btn btn-primary" data-btn-type="orgSelector" onclick="columnObj.selectOrg()">
+                下一步
+            </button>
+            <!--<button type="button" class="btn btn-primary" data-btn-type="preview" id="previewButton" disabled>预览</button>
+            <button type="button" class="btn btn-primary" data-btn-type="submit" id="submitButton" disabled>发布</button>-->
+        </div>
+    </div>
+    <!-- /.row -->
+
+</section>
+
+<script>
+    var form = null;
+    var brothers;
+    var reportId = "${reportId?default(0)}"
+    var columnObj = {
+        cancel: function () {
+            window.loadPage(basePath + "/report/edit?id=" + reportId);
+        },
+        preview: function () {
+            ajaxPost(basePath + "/report/checkSubmit/" + reportId, null,function (ret) {
+                if (ret.success) {
+                    //TODO 跳转到预览界面
+                } else {
+                    modals.warn(ret.message);
+                }
+            })
+        },
+        selectOrg: function () {
+            var flag = false;
+            ajaxPost(basePath + "/report/checkSubmit/" + reportId,null, function (ret) {
+                if (ret.success) {
+                    window.loadPage(basePath + "/report/orgSelector/" + reportId);
+                } else {
+                    modals.warn(ret.message);
+                }
+            })
+
+        },
+        createDict: function () {
+            if ($(".js-dict").is(":visible")) {
+                $(".js-dict").hide();
+                $(".js-dict input").attr("readonly", "readonly");
+            } else {
+                $(".js-dict").show();
+                $(".js-dict input").removeAttr("readonly");
+            }
+            var dict_value = $("#dictCode").val();
+            if (dict_value) {
+                ajaxPost(basePath + "/dict/checkExist/" + dict_value, null, function (data) {
+                    if (data.success) {
+                        $("#dictName").val(data.data.parentName);
+                        $("#names").val(data.data.names);
+                    }
+                    /* else {
+                                            $(".js-dict").hide();
+                                            $(".js-dict input").attr("readonly", "readonly");
+                                        }*/
+                })
+            }
+            /*var val = $("#dictCode").val() || "0";
+            modals.openWin({
+                winId: 'dictWin',
+                url: basePath + "/report/column/dict/" + val,
+                title: '创建字典',
+                width: '800px'
+            });*/
+        },
+        saveDict: function () {
+            var parentName = $("#dictName").val();
+            var parentCode = $("#dictCode").val();
+            var names = $("#names").val();
+            ajaxPost(basePath + "/dict/saveDictByNames", {
+                parentName: parentName,
+                parentCode: parentCode,
+                names: names
+            }, function (ret) {
+                if (ret.success) {
+                    modals.info("保存成功");
+                    var validator = $("#column-form").data('bootstrapValidator');
+                    validator.updateStatus("dictCode", 'NOT_VALIDATED', null).validateField("dictCode");
+                    $(".js-dict").hide();
+                    $(".js-dict input").attr("readonly", "readonly");
+                } else {
+                    modals.error(ret.message);
+                }
+            })
+        },
+        initTree: function (selectNodeId) {
+            var self = this;
+            var treeData = null;
+            ajaxPost(basePath + "/report/column/treeData/" + reportId, null, function (data) {
+                treeData = data;
+            });
+            $("#tree").treeview({
+                data: treeData,
+                showBorder: true,
+                expandIcon: "glyphicon glyphicon-stop",
+                collapseIcon: "glyphicon glyphicon-unchecked",
+                levels: 1,
+                onNodeSelected: function (event, data) {
+                    self.fillDictForm(data);
+                    self.formReadonly();
+                    //console.log(JSON.stringify(data));
+                }
+            });
+            if (treeData.length == 0) {
+                self.formReadonly();
+                return;
+            }
+            //默认选中第一个节点
+            selectNodeId = selectNodeId || 0;
+            $("#tree").data('treeview').selectNode(selectNodeId);
+            $("#tree").data('treeview').expandNode(selectNodeId);
+            $("#tree").data('treeview').revealNode(selectNodeId);
+        },
+        initTitle: function () {
+            ajaxPost(basePath + "/report/get/" + reportId, null, function (data) {
+                $("#page-title").text("【" + data.name + "】列维护");
+            })
+        },
+        columnTypeChanged: function (e) {
+            //if ($(e).is(":checked") && $("[name='name']").attr("readonly") != "readonly") {
+            if ($(e).is(":checked")) {
+                $("div.form-group[data-hidden]").show();
+                var column_type = $(e).val();
+                $("div.form-group[data-hidden]").each(function () {
+                    var val = $(this).data("hidden");
+                    if (val.indexOf(column_type) > -1) {
+                        $(this).hide();
+                    }
+                })
+            }
+        },
+        initButtonClick: function () {
+            //按钮事件
+            var btntype = null;
+            var self = this;
+            $('button[data-btn-type]').click(function () {
+                var action = $(this).attr('data-btn-type');
+                var selectedArr = $("#tree").data("treeview").getSelected();
+                var selectedNode = selectedArr.length > 0 ? selectedArr[0] : null;
+                switch (action) {
+                    case 'addRoot':
+                        self.formWritable(action);
+                        form.clearForm();
+                        //填充上级字典和层级编码
+                        self.fillParentAndLevelCode(null);
+                        btntype = 'add';
+                        break;
+                    case 'add':
+                        if (!selectedNode) {
+                            modals.info('请先选择上级字典');
+                            return false;
+                        }
+                        self.formWritable(action);
+                        form.clearForm();
+                        //填充上级字典和层级编码
+                        self.fillParentAndLevelCode(selectedNode);
+                        btntype = 'add';
+                        break;
+                    case 'edit':
+                        if (!selectedNode) {
+                            modals.info('请先选择要编辑的节点');
+                            return false;
+                        }
+                        //if (btntype == 'add') {
+                        self.fillDictForm(selectedNode);
+                        //}
+                        self.formWritable(action);
+                        btntype = 'edit';
+                        break;
+                    case 'delete':
+                        if (!selectedNode) {
+                            modals.info('请先选择要删除的节点');
+                            return false;
+                        }
+                        if (btntype == 'add')
+                            self.fillDictForm(selectedNode);
+                        self.formReadonly();
+                        $(".box-header button[data-btn-type='delete']").removeClass("btn-default").addClass("btn-primary");
+                        if (selectedNode.nodes) {
+                            modals.info('该节点含有子节点，请先删除子节点');
+                            return false;
+                        }
+                        modals.confirm('是否删除该节点', function () {
+                            ajaxPost(basePath + "/report/column/delete/" + selectedNode.id, null, function (data) {
+                                if (data.success) {
+                                    modals.correct('删除成功');
+                                } else {
+                                    modals.info(data.message);
+                                }
+                                //定位
+                                brothers = $("#tree").data("treeview").getSiblings(selectedNode);
+                                if (brothers.length > 0)
+                                    self.initTree(brothers[brothers.length - 1].nodeId);
+                                else {
+                                    var parent = $("#tree").data("treeview").getParent(selectedNode);
+                                    self.initTree(parent ? parent.nodeId : 0);
+                                }
+                            });
+                        });
+                        break;
+                    case 'cancel':
+                        if (btntype == 'add')
+                            self.fillDictForm(selectedNode);
+                        self.formReadonly();
+                        break;
+                }
+            });
+        },
+
+        //新增时，带入父级字典名称id,自动生成levelcode
+        fillParentAndLevelCode: function (selectedNode) {
+            $("input[name='parentName']").val(selectedNode ? selectedNode.text : ' ');
+            if (selectedNode) {
+                $("input[name='parentId']").val(selectedNode.id);
+                var nodes = selectedNode.nodes;
+                var levelCode = nodes ? nodes[nodes.length - 1].levelCode : null;
+                $("input[name='levelCode']").val(getNextCode(selectedNode.levelCode, levelCode, 6));
+            } else {
+                var parentNode = $("#tree").data("treeview").getNode(0);
+                var levelCode = "000000";
+                if (parentNode) {
+                    levelCode = parentNode.levelCode;
+                    brothers = $("#tree").data("treeview").getSiblings(0);
+                    if (brothers.length > 0)
+                        levelCode = brothers[brothers.length - 1].levelCode;
+                }
+                $("input[name='levelCode']").val(getNextCode("", levelCode, 6));
+            }
+        },
+
+        //填充form
+        fillDictForm: function (node) {
+            if (node) {
+                form.clearForm();
+                ajaxPost(basePath + "/report/column/get/" + node.id, null, function (data) {
+                    console.log(data);
+                    form.initFormData(data);
+                })
+            }
+        },
+
+        //设置form为只读
+        formReadonly: function () {
+            //所有文本框只读
+            $("input[name],textarea[name]").attr("readonly", "readonly");
+            $(".select2").attr("disabled", true);
+            $(".js-dict").hide();
+            $(".js-dict input").attr("readonly", "readonly");
+            $("#dict_button,#dict_save_button").attr("disabled", "disabled");
+            $("input[data-flag='icheck']").attr("readonly", "readonly");
+            //隐藏取消、保存按钮
+            $("#column-form .box-footer").hide();
+            //还原新增、编辑、删除按钮样式
+            $(".box-header button").removeClass("btn-primary").addClass("btn-default");
+            //还原校验框
+            if ($("#column-form").data('bootstrapValidator'))
+                $("#column-form").data('bootstrapValidator').resetForm();
+        },
+        formWritable: function (action) {
+            $("input[name],textarea[name]").removeAttr("readonly");
+            $(".select2").removeAttr("disabled");
+            $("#dict_button,#dict_save_button").removeAttr("disabled");
+            $("input[data-flag='icheck']").removeAttr("disabled");
+            $("#column-form .box-footer").show();
+            $(".box-header button").removeClass("btn-primary").addClass("btn-default");
+            if (action)
+                $(".box-header button[data-btn-type='" + action + "']").removeClass("btn-default").addClass("btn-primary");
+        },
+        checkParams: function (params) {
+            var errorArr = [];
+            if (params.columnType == BaseConstant.columnType.calc) {
+                // 为空判断
+                var arr = ["componentType.id", "dataType.id", "expression"];
+                var emptyArr = ["控件类型", "数据类型", "计算表达式"];
+                for (var i = 0; i < arr.length; i++) {
+                    if (!$("[name='" + arr[i] + "']").val()) {
+                        errorArr.push(emptyArr[i] + "不能为空!\r\n");
+                    }
+                }
+                // 范围值判断
+                // 控件类型
+                var component = $("[name='componentType.id'] option:selected").text();
+                if (component != "文本") {
+                    errorArr.push("统计列只能为可读文本");
+                }
+                // 数据类型
+                var dataType = $("[name='dataType.id'] option:selected").text();
+                if (dataType != "小数" || dataType != "整数") {
+                    errorArr.push("数据类型只能为小数或者整数");
+                }
+                //保留位数
+                var precision = $("[name='precision']").val();
+                if (dataType == "小数") {
+                    if (precision) {
+                        var r = /^\+?[1-4]$/;
+                        if (!r.test(precision))
+                            errorArr.push("保留位数必须在1-4之间的整数");
+                    } else {
+                        errorArr.push("保留位数不能为空");
+                    }
+                }
+                if (dataType == "整数") {
+                    if (precision && precision != 0) {
+                        errorArr.push("保留位数为空或者为0");
+                    }
+                }
+
+
+            } else if (params.columnType == BaseConstant.columnType.normal) {
+                var arr = ["componentType.id", "dataType.id", "notNull"];
+                var emptyArr = ["控件类型", "数据类型", "计算表达式", "是否必填"];
+                for (var i = 0; i < arr.length; i++) {
+                    if (!$("[name='" + arr[i] + "']").val()) {
+                        errorArr.push(emptyArr[i] + "不能为空!\r\n");
+                    }
+                }
+                var dataType = $("[name='dataType.id'] option:selected").text();
+                var precision = $("[name='precision']").val();
+                if (dataType == "小数") {
+                    if (precision) {
+                        var r = /^\+?[1-4]$/;
+                        if (!r.test(precision))
+                            errorArr.push("保留位数必须在1-4之间的整数");
+                    } else {
+                        errorArr.push("保留位数不能为空");
+                    }
+                }
+                //字典编码校验
+                ajaxPost(basePath + "/dict/checkExist/" + $("#dictCode").val(), null, function (data) {
+                    if (!data.success) {
+                        errorArr.push(data.message);
+                    }
+                })
+            }
+
+            // 计算表达式校验
+            var expression = params.expression;
+            if (expression) {
+                ajaxPost(basePath + "/report/column/checkExpression", {
+                    "reportId": reportId,
+                    "expression": expression
+                }, function (data) {
+                    if (!data.success) {
+                        errorArr.push(data.message);
+                    }
+                })
+            }
+            return errorArr;
+        }
+    };
+    $(function () {
+        //初始化form表单
+        form = $("#column-form").form();
+        form.initComponent({baseentity: false});
+
+        columnObj.initTitle();
+        columnObj.initTree(0);
+
+        //初始化校验
+        $("#column-form").bootstrapValidator({
+            message: '请输入有效值',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            submitHandler: function (validator, dictform, submitButton) {
+                //Save Data，对应'submit-提交'
+                var params = form.getFormSimpleData('input[name]:visible, select[name]:visible, textarea[name]:visible,input:hidden');
+                params["report"]["id"] = reportId;
+                //参数校验
+                var errorMsg = columnObj.checkParams(params);
+                if (errorMsg.length > 0) {
+                    modals.error(errorMsg.join());
+                    return;
+                }
+                modals.confirm('确认保存？', function () {
+                    ajaxPost(basePath + '/report/column/save', {"obj": JSON.stringify(params)}, function (data, status) {
+                        if (data.success) {
+                            //var id=$("input[name='id']").val();
+                            var selectedArr = $("#tree").data("treeview").getSelected();
+                            var selectedNodeId = selectedArr.length > 0 ? selectedArr[0].nodeId : 0;
+                            columnObj.initTree(selectedNodeId);
+                        }
+                    });
+                });
+            },
+            fields: {
+                name: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入名称'
+                        }
+                    }
+                },
+                code: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入编码'
+                        },
+                        remote: {
+                            url: basePath + "/report/column/checkUnique",
+                            data: function (validator) {
+                                return {
+                                    reportId: reportId,
+                                    code: $('#code').val(),
+                                    id: $('#id').val()
+                                };
+                            },
+                            message: '该编码已被使用'
+                        }
+                    }
+                },
+                levelCode: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入层级编码'
+                        }
+                    }
+                },
+                precision: {
+                    validators: {
+                        integer: {message: '请填写整数'}
+                    }
+                },
+                dictCode: {
+                    validators: {
+                        threshold: 4,
+                        remote: {
+                            url: basePath + "/dict/checkCode",
+                            data: function (validator) {
+                                return {
+                                    code: $('#dictCode').val(),
+                                };
+                            },
+                            message: '该编码的字典不存在，或者尚未创建子字典',
+                            delay: 1000
+                        }
+                    }
+                }
+            }
+        });
+
+        form.initComponent();
+
+        columnObj.initButtonClick();
+
+    })
+
+
+</script>

@@ -1,0 +1,168 @@
+<style>
+    #eventImage img{
+        width: 100px;
+        margin-right: 10px;
+        vertical-align: top;
+    }
+
+    #event-feedback-modal tr td{
+        padding:5px 0px;
+    }
+    #event-feedback-modal td.kv-label{
+        width:120px;
+        text-align: center;
+    }
+
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title"></h5>
+</div>
+
+<div class="modal-body" id="event-feedback-modal" style="background-color: #ecf0f5">
+
+    <form id="event-form" name="event-form" class="form-horizontal">
+        <input type="hidden" name="id">
+        <input type="hidden" name="version">
+        <input type="hidden" name="isSuperAdmin">
+        <input type="hidden" name="createDateTime" data-flag="date" data-format="yyyy-mm-dd hh:ii:ss">
+        <input type="hidden" name="deleted">
+        <input type='hidden' value='${CSRFToken}' id='csrftoken'>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-solid">
+
+                    <div class="box-body" style="min-height:400px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">事件标题</label></td>
+                                <td colspan="3"><input type="text" class="form-control" id="title" name="title"
+                                                       placeholder="事件标题" readonly value="黄村发生石油管道爆炸1"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">进展反馈</label></td>
+                                <td class="kv-content" colspan="3">
+                                    <textarea class="form-control" placeholder="请填写进展反馈" style="height: 120px;"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">填报时间</label></td>
+                                <td class="kv-content">
+                                    <div class="has-feedback" style="width: 300px;">
+                                        <input type="search" placeholder="填报时间"  name="birthday" value="2018-07-12 12:23"
+                                               data-flag="datepicker" class="form-control" data-format="yyyy-mm-dd" style="width:200px;">
+                                        <span class="fa fa-calendar form-control-feedback" style="width:200px;"></span>
+                                    </div>
+                                </td>
+                                <td class="kv-label"><label for="eventSource" class="control-label">填报人员</label></td>
+                                <td class="kv-content">
+                                    <input type="text" class="form-control" id="eventSource" name="title"
+                                           placeholder="填报人员" readonly value="刘德华"></td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="title" class="control-label">现场图片</label></td>
+                                <td class="kv-content" colspan="3">
+                                    <ul class="mailbox-attachments clearfix">
+                                        <li>
+                                            <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo1.png" alt="Attachment"></span>
+
+                                            <div class="mailbox-attachment-info">
+                                                <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo1.png</a>
+                                                <span class="mailbox-attachment-size">
+                          2.67 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                          &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo2.png" alt="Attachment"></span>
+
+                                            <div class="mailbox-attachment-info">
+                                                <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo2.png</a>
+                                                <span class="mailbox-attachment-size">
+                          1.9 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                                                     &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="mailbox-attachment-icon has-img"><img src="${basePath}/resources/adminlte/dist/img/photo3.jpg" alt="Attachment"></span>
+                                            <div class="mailbox-attachment-info">
+                                                <a href="#" class="mailbox-attachment-name"><i class="fa fa-camera"></i> photo3.png</a>
+                                                <span class="mailbox-attachment-size">
+                          1.9 MB
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-cloud-download"></i></a>
+                                                     &nbsp;
+                          <a href="#" class="btn btn-default btn-xs pull-right"><i class="fa fa-trash"></i></a>
+                          &nbsp;
+                        </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                   <!-- <div id="eventImage" style="height:161px;">
+                                        <img src="${basePath}/resources/common/images/01.jpg">
+                                        <img src="${basePath}/resources/common/images/02.jpg">
+                                        <img src="${basePath}/resources/common/images/03.jpg">
+                                        <button  type="button" class="btn btn-social-icon btn-primary btn-lg"  id="fileBtn"> <i class="fa fa-plus" style="font-size: 35px;"></i> </button>
+                                    </div>-->
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="box-footer text-center">
+                        <!--以下两种方式提交验证,根据所需选择-->
+                        <div class="btn btn-default btn-file">
+                            <i class="fa fa-paperclip"></i> 上传图片
+                            <input type="file" name="attachment" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 提交
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+                                class="fa fa-remove"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.box-body -->
+
+        <!-- /.box-footer -->
+    </form>
+
+</div>
+<script>
+    var eventFeedbackObj = {
+        form: null,
+        initForm: function () {
+            var form = $("#event-form").form();
+            form.initComponent();
+            this.form = form;
+
+        },
+        resetForm: function () {
+            this.form.clearForm();
+            $("#user-form").data('bootstrapValidator').resetForm();
+        }
+    };
+
+    $(function () {
+        eventFeedbackObj.initForm();
+
+    });
+
+
+</script>

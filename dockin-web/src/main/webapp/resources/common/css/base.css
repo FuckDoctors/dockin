@@ -1,0 +1,160 @@
+.table-border {
+    border: 1px solid #f9f9f9;
+    border-collapse:separate;
+}
+
+.table-border thead{
+    background-color:#f9f9f9;
+}
+
+.avatar-container{
+    border-radius: 6px;
+    width:168px;
+    height:168px;
+    margin:0 auto;
+}
+
+
+
+.avatar-img{
+    margin:2px;
+    width:160px;
+    height:160px;
+    text-align:center;
+    align:center;
+    border-radius: 50%;
+    padding:3px;
+    border:3px solid #d2d6de;
+}
+
+.upload-img{
+    margin:2px;
+    width:225px;
+    height:160px;
+    text-align:left;
+    align:left;
+    border:1px solid #d2d6de;
+}
+
+.btn-camera{
+    border:1px solid gray;
+    background-color:#fff;
+    color:gray;
+}
+
+.btn-camera:hover{
+    background-color:gray;
+    color:#fff;
+}
+
+.navbar-fixed-middle {
+    position: fixed;
+    z-index: 1031;
+    bottom:30px;
+    right: 15px;
+    margin-bottom: 0;
+    border-width: 1px 0 0;
+}
+
+.dataTables_filter{
+    margin:10px 10px -10px 15px;
+}
+
+.dataTables_filter div{
+    display: inline-block;
+}
+
+.dataTables_filter div.btn-group{
+    vertical-align: top;
+}
+
+.dataTables_filter button.btn{
+    vertical-align: top;
+}
+
+.dataTables_filter .select2-container{
+    vertical-align: top;
+}
+
+
+.dataTables_filter div.form-group input{
+   width:140px;
+}
+
+
+
+/*解决图片预览位置问题*/
+#kvFileinputModal .file-preview-other{
+    line-height: 1!important;
+}
+
+.dataTables_length{
+    display: inline;
+    margin-left:10px;
+}
+
+.dataTables_info{
+    display:inline;
+}
+
+.sidebar .nav i{
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.sidebar .nav > li > a:hover i, .sidebar .nav > li > a:focus i, .sidebar .nav > li > a.active i{
+    color:#00AAFF;
+}
+
+.navbar-nav > li > a{
+    padding-top:20px;
+    padding-bottom: 20px;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}

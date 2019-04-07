@@ -1,0 +1,110 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">修改密码或账户</h5>
+</div>
+
+<div class="modal-body">
+
+    <form id="user-form" name="user-form" class="form-horizontal">
+        <div class="box-body">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名:</label>
+                    <div class="col-sm-8">
+                        <label name="name" class="control-label">${curUser.name!}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginName" class="col-sm-3 control-label">账户</label>
+                    <div class="input-group col-sm-8">
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="loginName" name="loginName"
+                                   value="${curUser.loginName!}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="oldPassword" class="col-sm-3 control-label">原密码</label>
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" value="" id="oldPassword" name="oldPassword"
+                               placeholder="请输入原密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword" class="col-sm-3 control-label">新密码</label>
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword"
+                               placeholder="请输入新的密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="col-sm-3 control-label">确认密码</label>
+
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                               placeholder="请输入确认密码">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer text-right">
+            <!--以下两种方式提交验证,根据所需选择-->
+            <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="changeUserPwd()" data-btn-type="save">提交</button>
+        </div>
+        <!-- /.box-footer -->
+    </form>
+
+</div>
+<script>
+    $(function () {
+        $("#oldPassword").val("");
+    })
+
+    function changeUserPwd() {
+        var oldPwd = $("#oldPassword").val();
+        if (!oldPwd) {
+            modals.info("原密码不能为空");
+            $("#oldPassword").focus();
+            return;
+        }
+        var newPwd = $("#newPassword").val();
+        if (!newPwd || newPwd.length < 6) {
+            modals.info("新密码不能为空,且长度最小为6位");
+            $("#newPassword").focus();
+            return;
+        }
+        var conPwd = $("#confirmPassword").val();
+        if (!conPwd) {
+            modals.info("确认密码不能为空,且长度最小为6位");
+            $("#confirmPassword").focus();
+            return;
+        }
+        if (newPwd == oldPwd) {
+            modals.info("新密码和原密码不能一样");
+            return;
+        }
+        if (newPwd != conPwd) {
+            modals.info("新密码和确认密码必须一致");
+            return;
+        }
+        if(!$("#loginName").val()){
+            modals.info("用户账户不能为空");
+            return;
+        }
+        ajaxPost(basePath + "/user/password/change", {userId:"${curUser.id!}",loginName:$("#loginName").val(),oldPwd: oldPwd, newPwd: newPwd}, function (result) {
+            if (result.success) {
+                modals.info("密码修改成功,请重新登录");
+                window.location.href=basePath+"/logout";
+            } else {
+                modals.info(result.message);
+                return;
+            }
+        });
+    }
+</script>

@@ -1,0 +1,74 @@
+<!-- bootstrap slider -->
+<link rel="stylesheet" href="${basePath}/resources/adminlte/plugins/bootstrap-slider/slider.css">
+<style>
+    #map-event-detail {
+        font-size: 13px;
+    }
+    #map-event-detail img{
+        width: 80px;
+    }
+</style>
+<h5>大兴亦庄发生煤气泄露事故2</h5>
+<hr class="no-margin">
+<div class="box-body no-padding" id="map-event-detail" style="margin-top: 10px;width:360px;">
+    <div class="row">
+        <div class="col-xs-8">
+            <div style="margin-bottom: 6px;">
+                <label class="control-label"> 位置：</label>
+                <span>大兴区XXX乡富源小区东街胡同16号万方宾馆万方宾馆</span>
+            </div>
+            <div style="margin-bottom: 6px;">
+                <label class="control-label"> 详细描述：</label>
+                <span>大兴区XXX乡富源小区东街胡同16号万方宾馆万方宾馆大兴区XXX乡富源小区东街胡同16号万方宾馆万方宾馆</span>
+            </div>
+
+            <div style="margin-bottom: 6px;">
+                <label class="control-label">点击下面按钮，进行周边检索 </label>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="text-center"><i class="fa fa-angle-up fa-2x text-muted" style="cursor: pointer"></i></div>
+            <div class="text-center" style="margin:5px 0">
+                <img src="${basePath}/resources/adminlte/dist/img/user1-128x128.jpg" alt="Product Image">
+            </div>
+            <div class="text-center"><i class="fa fa-angle-down fa-2x text-muted" style="cursor: pointer"></i></div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="margin-bottom: 6px;">
+                <label class="control-label"> 搜索半径</label>
+                <span> <input type="text" value="" class="slider form-control" data-slider-min="0" data-slider-max="100"
+                              data-slider-step="5" data-slider-value="[0,50]" data-slider-orientation="horizontal"
+                              data-slider-selection="before" data-slider-tooltip="show" data-slider-id="red"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="box-footer text-center">
+    <div class="row">
+        <div class="col-xs-12">
+            <button class="btn btn-default" style="width:90px;">应急物资</button>
+            <button class="btn btn-default" style="width:90px;">救援队伍</button>
+            <button class="btn btn-default" style="width:90px;">消防栓</button>
+            <button class="btn btn-default" style="width:90px;">危险源</button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-xs-12">
+            <button class="btn btn-default" style="width:90px;">警务工作室</button>
+            <button class="btn btn-default" style="width:90px;">防护目标</button>
+            <button class="btn btn-default" style="width:90px;">避难场所</button>
+            <button class="btn btn-default" style="width:90px;">医疗工作站</button>
+        </div>
+    </div>
+
+</div>
+<script src="${basePath}/resources/adminlte/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+<script>
+    $(function () {
+        $(".slider").slider();
+    })
+</script>

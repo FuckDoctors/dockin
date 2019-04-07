@@ -1,0 +1,55 @@
+
+<div class="box-body no-padding" id="map-surveillance-list">
+     <div id="surveillance-tree"> </div>
+</div>
+<script>
+
+    var surveillanceObj={
+        initTree: function () {
+            $("#surveillance-tree").treeview({
+                data: [ {
+                    "id": 2,
+                    "text": "全部监控",
+                    "nodes": [{
+                        "id": 21,
+                        "text": "核心区A",
+                        "nodes": [{
+                            "id": 211,
+                            "text": "河西区与河东区交叉路口A",
+                            "icon":"fa fa-video-camera"
+                        }, {
+                            "id": 212,
+                            "text": "河西区与河东区交叉路口B",
+                            "icon":"fa fa-video-camera"
+
+                        }, {
+                            "id": 213,
+                            "text": "河西区与河东区交叉路口C",
+                            "icon":"fa fa-video-camera"
+                        }]
+                    }, {
+                        "id": 22,
+                        "text": "核心区B",
+                        "nodes": [{
+                            "id": 221,
+                            "text": "河西区与河东区交叉路口D",
+                            "icon":"fa fa-video-camera"
+                        }, {
+                            "id": 222,
+                            "text": "河西区与河东区交叉路口E",
+                            "icon":"fa fa-video-camera"
+                        }]
+                    }]
+                }],
+                showBorder: false,
+                levels: 3,
+                showCheckbox: true,
+                showIcon: true
+            })
+        }
+    }
+    $(function () {
+        surveillanceObj.initTree();
+    })
+
+</script>

@@ -1,0 +1,263 @@
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li><a href="${basePath}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">报表管理</a></li>
+        <li class="active" id="page-org"></li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="box box-primary" style="min-height:400px;">
+                <div class="box box-header">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="selectAllBtn"
+                                style="margin-right:10px;">
+                            <li class="fa fa-plus">&nbsp;全选</li>
+                        </button>
+                        <button type="button" class="btn btn-primary" id="unSelectAllBtn"
+                                style="margin-right:10px;">
+                            <li class="fa fa-edit">&nbsp;全不选</li>
+                        </button>
+                        <select id="node_level" class="form-control select2">
+                            <option value="level1">一级节点</option>
+                            <option value="level2">二级节点</option>
+                            <option value="level3">三级节点</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="tree"></div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="box box-primary" style="min-height:436px;">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="startDate" class="col-sm-3 control-label">报表类型</label>
+                        <div class="input-group col-sm-8">
+                            <span id="reportType"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate" class="col-sm-3 control-label">开始时间</label>
+                        <div class="input-group col-sm-8">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form-control" data-flag="datepicker" data-format="yyyy-mm-dd"
+                                   name="startDate" id="startDate"
+                                   placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate" class="col-sm-3 control-label">结束时间</label>
+                        <div class="input-group col-sm-8">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form-control" data-flag="datepicker" data-format="yyyy-mm-dd"
+                                   name="endDate" id="endDate"
+                                   placeholder="结束时间">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box-footer text-right">
+                <button type="button" class="btn btn-default" data-btn-type="cancel" onclick="orgSelectorObj.cancel()"
+                        data-dismiss="modal">上一步
+                </button>
+                <button type="button" class="btn btn-primary" data-btn-type="orgSelector"
+                        onclick="orgSelectorObj.publish(0)">
+                    临时保存
+                </button>
+                <button type="button" class="btn btn-primary" data-btn-type="orgSelector"
+                        onclick="orgSelectorObj.publish(10)">
+                    发布
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var reportId = "${id?default(0)}";
+    var orgSelectorObj = {
+        initData: function () {
+            ajaxPost(basePath + "/report/get/" + reportId, null, function (data) {
+                $("#page-org").text("【" + data.name + "】下达机构");
+                $("#reportType").text(data.type.name);
+                // 开始时间 结束时间
+                if (data.startDate) {
+                    $("#startDate").val(formatDate(new Date(data.startDate), "yyyy-mm-dd"));
+                }
+                if (data.endDate) {
+                    $("#endDate").val(formatDate(new Date(data.endDate), 'yyyy-mm-dd'));
+                }
+                // 组织机构回填
+                if (data.orgIds) {
+                    var orgArr = data.orgIds.split(",");
+                    for (var i = 0; i < orgArr.length; i++) {
+                        console.log(orgArr[i]);
+                        var nodes = $("#tree").data("treeview").findNodes(orgArr[i], 'g', 'id');
+                        console.log(nodes);
+                        if (nodes && nodes.length > 0) {
+                            $('#tree').treeview('checkNode', [nodes[0].nodeId, {silent: true}]);
+                        }
+                    }
+
+                }
+            })
+        },
+        initTree: function (selectNodeId) {
+            var self = this;
+            var treeData = null;
+            ajaxPost(basePath + "/org/treeData", null, function (data) {
+                treeData = data;
+            });
+            $("#tree").treeview({
+                data: treeData,
+                showBorder: true,
+                levels: 3,
+                showCheckbox: true,
+                showIcon: false
+            });
+            if (treeData.length == 0)
+                return;
+            //默认选中第一个节点
+            selectNodeId = selectNodeId || 0;
+            $("#tree").data('treeview').selectNode(selectNodeId);
+            $("#tree").data('treeview').expandNode(selectNodeId);
+            $("#tree").data('treeview').revealNode(selectNodeId);
+        },
+        initSelect2: function () {
+            $(".select2").select2({
+                minimumResultsForSearch: Infinity
+            });
+        },
+        initDatePicker: function () {
+            if ($("[data-flag='datepicker']").length > 0) {
+                $("[data-flag='datepicker']").datepicker({
+                    autoclose: true,
+                    format: $(this).data("format") ? $(this).data("format") : "yyyy-mm-dd",
+                    language: 'zh-CN',
+                    clearBtn: true,
+                    todayHighlight: true
+                })
+            }
+        },
+        getCheckedNodes: function () {
+            var nodes = $("#tree").data("treeview").getChecked();
+            return nodes;
+        },
+        checkAll: function () {
+            var node_level = $("#node_level").val();
+            var level = parseInt(node_level.replace("level", "")) * 6;
+            var nodes = $("#tree").data("treeview").findNodes("\\d{" + level + "}", "g", "levelCode");
+            console.log(nodes);
+            if (nodes && nodes.length > 0) {
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].levelCode.length == level)
+                        $('#tree').treeview('checkNode', [nodes[i].nodeId, {silent: true}]);
+                }
+            }
+        },
+        uncheckAll: function () {
+            var node_level = $("#node_level").val();
+            var level = parseInt(node_level.replace("level", "")) * 6;
+            var nodes = $("#tree").data("treeview").findNodes("\\d{" + level + "}", "g", "levelCode");
+            if (nodes && nodes.length > 0) {
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].levelCode.length == level)
+                        $('#tree').treeview('uncheckNode', [nodes[i].nodeId, {silent: true}]);
+                }
+            }
+        },
+        cancel: function () {
+            modals.confirm("返回数据列编辑界面，是否放弃本页面的编辑，直接返回？", function () {
+                window.loadPage(basePath + "/report/column/tree/" + reportId);
+            })
+        },
+        publish: function (state) {
+            // validate data before submit
+            //check if org has been selected or not
+            var nodes = this.getCheckedNodes();
+            var nodeIdArr = [];
+            if (nodes.length == 0) {
+                modals.warn("请选择要填报的组织机构");
+                return;
+            } else {
+                for (var i = 0; i < nodes.length; i++) {
+                    nodeIdArr.push(nodes[i].id);
+                }
+            }
+            var orgIds = nodeIdArr.join();
+            //check startDate and endDate
+            var serverTime = new Date(ajaxPost(basePath + '/base/getServerTime'));
+            // startDate can not be null
+            var s_d = null;
+            var startDate = $("#startDate").val();
+            if (startDate) {
+                s_d = new Date(startDate.replace(/\-/g, "\/"));
+            } else {
+                modals.warn("请设置开始时间");
+                return;
+            }
+            if (s_d < serverTime) {
+                modals.warn("开始时间必须晚于当前时间");
+                return;
+            }
+            var endDate = $("#endDate").val();
+            if (endDate) {
+                var e_d = new Date(endDate.replace(/\-/g, "\/"));
+                if (s_d > e_d) {
+                    modals.warn("结束时间必须晚于开始时间");
+                    return;
+                }
+                if (e_d < serverTime) {
+                    modals.warn("结束时间必须晚于当前时间");
+                    return;
+                }
+            }
+            ajaxPost(basePath + "/report/instance/generate", {
+                reportId: reportId,
+                orgIds: orgIds,
+                startDate: startDate,
+                endDate: endDate,
+                state: state + ""
+            }, function (ret) {
+                if (ret.success) {
+                    if (state == 0)
+                        modals.correct("保存成功");
+                    else
+                        modals.correct("下达成功");
+                    window.loadPage(basePath + "/report/list");
+                } else {
+                    modals.warn(ret.message);
+                }
+            })
+
+        },
+
+
+    };
+
+    $(function () {
+
+        orgSelectorObj.initTree(0);
+
+        orgSelectorObj.initSelect2();
+        orgSelectorObj.initDatePicker();
+        //select all
+        $("#selectAllBtn").click(function () {
+            orgSelectorObj.checkAll();
+        })
+        //unselect all
+        $("#unSelectAllBtn").click(function () {
+            orgSelectorObj.uncheckAll();
+        })
+        orgSelectorObj.initData();
+        // 数据回填
+        //orgSelectorObj.fillData();
+
+    })
+
+</script>

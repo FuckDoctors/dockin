@@ -1,0 +1,77 @@
+<style>
+    #duty-add-modal tr td{
+        padding:5px 0px;
+    }
+    #duty-add-modal td.kv-label{
+        width:100px;
+        text-align: center;
+    }
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <li class="fa fa-remove"></li>
+    </button>
+    <h5 class="modal-title">新增用户</h5>
+</div>
+
+<div class="modal-body" id="duty-add-modal">
+    <form id="duty-add-form" name="duty-add-form" class="form-horizontal">
+                <div class="box box-solid">
+                    <div class="box-body" style="min-height:330px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="kv-label"><label for="eventType" class="control-label">人员姓名</label></td>
+                                <td>
+                                    <select name="name" id="memberName" data-flag="dictSelector"
+                                            data-placeholder="请选择姓名" class="form-control select2" style="width: 260px;"
+                                            data-blank="true">
+                                    </select>
+                                </td>
+                                <td class="kv-label"><label class="control-label">工作单位</label></td>
+                                <td class="kv-content">
+                                    <input class="form-control" type="text" name="name" placeholder="自动填充用户所在单位"  style="width: 260px;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label for="eventType" class="control-label">值班职务</label></td>
+                                <td><select name="eventType" id="eventType" data-flag="dictSelector"
+                                            data-code="EVENT_TYPE"
+                                            class="form-control select2" style="width: 260px;"
+                                            data-blank="true">
+                                    <option selected>带班领导</option>
+                                    <option>主任</option>
+                                    <option>副班</option>
+                                    <option>副班</option>
+                                    <option>副班</option>
+                                </select>
+                               </td>
+                                <td class="kv-label"><label class="control-label">办公电话</label></td>
+                                <td><input class="form-control" type="text" name="name" placeholder="请输入办公电话"  style="width: 260px;"></td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="kv-label"><label  class="control-label">常用手机</label></td>
+                                <td class="kv-content"><input class="form-control" type="text" name="name" placeholder="请输入手机号码" style="width: 260px;"></td>
+                                <td class="kv-label"><label  class="control-label">备用手机</label></td>
+                                <td class="kv-content">
+                                    <input class="form-control" type="text" name="name" placeholder="请输入备用手机"  style="width: 260px;">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="box-footer text-center">
+                        <!--以下两种方式提交验证,根据所需选择-->
+                        <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 仅保存
+                        </button>
+                        <button type="submit" class="btn btn-primary" data-btn-type="save"><i class="fa fa-save"></i> 保存并继续
+                        </button>
+                        <button type="button" class="btn btn-default" data-btn-type="cancel" data-dismiss="modal"><i
+                                class="fa fa-remove"></i> 取消
+                        </button>
+                    </div>
+                </div>
+    </form>
+</div>
+<script>
+</script>
