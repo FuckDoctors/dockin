@@ -9,8 +9,8 @@ out/*
 .svn
 *.svn
 *.svn/*
-*/setting.properties
-*/jdbc.properties
+dockin-web/src/main/resources/setting.properties
+dockin-web/src/main/resources/jdbc.properties
 
 
 
